@@ -11,12 +11,12 @@ public:
     virtual void Init() = 0;
     virtual void Update() = 0;
     virtual int GetHP() = 0;
-    virtual void SetHP(int hp) = 0;
+    virtual void SetHP(int hp);
     virtual bool GetDead();
-    virtual void SetDead(bool dead) = 0;
+    virtual void SetDead(bool dead);
     virtual void Delete() = 0;
-    virtual void SetPosition(Vector3 pos) = 0;
-    virtual Vector3 GetPoition();
+    virtual void SetPosition(Vector3 pos);
+    virtual Vector3 GetPosition();
 protected:
     int HP;
     bool Dead;
