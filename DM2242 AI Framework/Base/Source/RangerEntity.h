@@ -9,13 +9,7 @@ public:
 
     void Init();
     void Update();
-    int GetHP();
-    void SetHP(int hp);
-    bool GetDead();
-    void SetDead(bool dead);
     void Delete();
-    void SetPosition(Vector3 pos);
-    Vector3 GetPosition();
 private:
     bool DeadAlly;
 
