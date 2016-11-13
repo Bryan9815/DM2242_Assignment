@@ -30,6 +30,7 @@
     <ClCompile Include="Source\StateMachine.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
     <ClCompile Include="Source\RangerEntity.cpp" />
+    <ClCompile Include="Source\Warrior.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\RangerEntity.h" />
+    <ClInclude Include="Source\Warrior.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B172635-4E2B-46F1-A403-08F4194D00F5}</ProjectGuid>
