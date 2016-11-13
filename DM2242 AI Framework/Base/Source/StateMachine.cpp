@@ -14,6 +14,12 @@ StateMachine::StateMachine()
 
 StateMachine::~StateMachine()
 {
+    while (StateList.size() > 0)
+    {
+        State* temp = StateList.back();
+        delete temp;
+        StateList.pop_back();
+    }
 }
 
 void StateMachine::Init()
@@ -37,6 +43,8 @@ void StateMachine::DestroyState(std::string state)
     {
         if ((*it)->Name == state)
         {
+            State* temp = (*it);
+            delete temp;
             StateList.erase(it);
             break;
         }
@@ -64,8 +72,11 @@ void StateMachine::SetState(std::string state_name)
                 {
                     (*it)->active = true;
                     (*it2)->active = false;
+                    return;
                 }
             }
+            (*it)->active = true;
+            return;
         }
     }
 }

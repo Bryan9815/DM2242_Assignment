@@ -1,5 +1,5 @@
-#ifndef BASE_ENTITY_H
-#define BASE_ENTITY_H
+#ifndef STATE_MACHINE_H
+#define STATE_MACHINE_H
 
 #include <string>
 #include <vector>

@@ -20,6 +20,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
+    <ClCompile Include="Source\MobEntity.cpp" />
     <ClCompile Include="Source\SceneAI.cpp" />
     <ClCompile Include="Source\SceneAssignment2.cpp" />
     <ClCompile Include="Source\SceneAsteroid.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
+    <ClInclude Include="Source\MobEntity.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneAI.h" />
     <ClInclude Include="Source\SceneAssignment2.h" />
