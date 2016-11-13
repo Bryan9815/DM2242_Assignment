@@ -15,7 +15,7 @@ public:
     void SetDead(bool dead);
     void Delete();
     void SetPosition(Vector3 pos);
-    Vector3 GetPoition();
+    Vector3 GetPosition();
 private:
     bool DeadAlly;
 
