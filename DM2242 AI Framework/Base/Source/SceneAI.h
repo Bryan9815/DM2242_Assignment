@@ -1,5 +1,5 @@
-#ifndef SCENE_ASSIGNMENT2_H
-#define SCENE_ASSIGNMENT2_H
+#ifndef SCENE_AI_H
+#define SCENE_AI_H
 
 #include "GameObject.h"
 #include <vector>
