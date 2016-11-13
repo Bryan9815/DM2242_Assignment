@@ -4,6 +4,17 @@
 #include <string>
 #include <vector>
 
+class State
+{
+public:
+    State();
+    ~State();
+
+    std::string Name;
+    bool active;
+};
+
+
 class StateMachine
 {
 public:
@@ -17,7 +28,10 @@ public:
     std::string GetState();
     void SetState(std::string state_name);
 private:
-    std::vector<std::string> StateList;
+    std::vector<State*> StateList;
 };
+
+
+
 
 #endif
