@@ -141,6 +141,7 @@ void Warrior::Update(double dt)
 			EManager->DecreaseEntityHP("Mob", 5);
 			EManager->IncreaseEntityAggro("Warrior", 30);
 			Mob->MobSM.SetState("Knocked Back");
+			WarriorSM.SetState("Chase Enemy");
 		}
 	}
 	else if (WarriorSM.GetState() == "Revive")
