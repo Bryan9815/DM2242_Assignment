@@ -15,6 +15,7 @@ MobEntity::~MobEntity()
 }
 void MobEntity::Init(EntityManager* EManager)
 {
+    this->EManager = EManager;
     Name = "Mob";
     HP = 300;
     Dead = false;
@@ -140,7 +141,7 @@ void MobEntity::Update(double dt)
     {
 		Vector3 temp;
 		temp = EManager->FindNearestEntity_Pos(Position, Target);
-		Position += (Position - temp) * Speed * dt;
+        Position += (temp - Position).Normalize() * Speed * dt;
     }
     else if (MobSM.GetState() == "Attack")
     {

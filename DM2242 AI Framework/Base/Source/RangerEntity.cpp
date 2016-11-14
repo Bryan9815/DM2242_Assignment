@@ -32,6 +32,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager)
     RangerSM.AddState("Death"); 
     RangerSM.AddState("Bomb");
     RangerSM.AddState("Revive");
+    
 
     RangerSM.SetState("Move");
 
@@ -93,8 +94,11 @@ void RangerEntity::StateCheck()
     }
     else if (RangerSM.GetState() == "Shoot")
     {
-        if (NearestEnemyDist < 5)
+        if (NearestEnemyDist > 5)
+        {
             RangerSM.SetState("Move");
+        }
+            
         /*if (NearEnemies >= 4)
             RangerSM.SetState("Bomb");*/
     }
@@ -138,6 +142,10 @@ void RangerEntity::StateRun(double dt)
     }
     else if (RangerSM.GetState() == "Shoot")
     {
+        if (NearestEnemyDist < 4.5)
+        {
+            Position += -(Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position).Normalize() * MovementSpeed * dt;
+        }
         if (AttackReset_Timer > TIME_BETWEEN_ATTACKS)
         {
             AttackReset_Timer = 0;
