@@ -1,6 +1,6 @@
 #include "RangerEntity.h"
 #define MAXHP 100
-#define STARTPOS Vector3(0,0,0)
+#define STARTPOS Vector3(10,-45,0)
 #define TIME_BETWEEN_ATTACKS 1.0f
 
 RangerEntity::RangerEntity()
@@ -40,7 +40,7 @@ void RangerEntity::Update(double dt)
 {
     UpdateVariables(dt);
     StateCheck();
-    StateRun();
+    StateRun(dt);
 }
 
 void RangerEntity::Delete()
@@ -100,7 +100,7 @@ void RangerEntity::Revive()
     }    
 }
 
-void RangerEntity::StateRun()
+void RangerEntity::StateRun(double dt)
 {
     if (RangerSM->GetState() == "Move")
     {
@@ -139,6 +139,7 @@ void RangerEntity::StateRun()
 void RangerEntity::UpdateVariables(double dt)
 {
     NearestEnemyDist = Entity_Manager->FindDistanceBetweenEntities(Position, "Mob");
-    AttackReset_Timer += dt;
+    if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
+        AttackReset_Timer += dt;
     
 }

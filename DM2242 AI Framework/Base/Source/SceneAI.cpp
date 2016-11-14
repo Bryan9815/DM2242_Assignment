@@ -33,7 +33,10 @@ void SceneAI::Init()
     Entity_Manager = new EntityManager();
     Entity_Manager->Init();
     Ranger = new RangerEntity();
-    Entity_Manager->AddEntity(new RangerEntity());
+    Entity_Manager->AddEntity(Ranger);
+    warrior = new Warrior();
+    Entity_Manager->AddEntity(warrior);
+
 }
 
 GameObject* SceneAI::FetchGO()
