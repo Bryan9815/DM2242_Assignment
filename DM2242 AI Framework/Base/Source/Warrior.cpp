@@ -18,7 +18,7 @@ void Warrior::Init(EntityManager* EManager)
     this->EManager = EManager;
     Name = "Warrior";
 	HP = 100;
-	SetPosition(Vector3(0, 40, 0));
+	SetPosition(Vector3(10, 40, 0));
 	Speed = 6.f;
 	AttackRange = 2.f;
 	Attack = true;
@@ -115,7 +115,7 @@ void Warrior::Update(double dt)
 	{
 		Vector3 temp;
 		temp = EManager->FindNearestEntity_Pos(Position, "Mob");
-		Position += (Position - temp) * Speed * dt;
+		Position += -(Position - temp).Normalize() * Speed * dt;
 	}
 	else if (WarriorSM.GetState() == "Attack")
 	{
