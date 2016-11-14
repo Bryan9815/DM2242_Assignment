@@ -14,14 +14,16 @@ public:
 	void Update(double dt);
 	void Delete();
 
+	float WarriorMobDist;
+	float RangerMobDist;
+	float HealerMobDist;
+
 	StateMachine WarriorSM;
 private:
 	bool DeadAlly;
 	bool EnemyNearAlly;
 	bool Attack;
 	
-	float WarriorMobDist;
-	float AllyMobDist;
 	float Speed;
 	float AttackRange;
 	float Cooldown;

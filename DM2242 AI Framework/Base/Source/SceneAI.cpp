@@ -249,7 +249,7 @@ void SceneAI::RenderEntity()
 void SceneAI::Insert_Text_From_Here(float x, float y, float size, Color colour, string text)
 {
     modelStack.PushMatrix();
-    RenderTextOnScreen()
+	RenderTextOnScreen();
     modelStack.PopMatrix();
 }
 
