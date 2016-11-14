@@ -18,6 +18,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager)
     this->Entity_Manager = Entity_Manager;
     AttackRange = 5.0f;
     AttackDamage = 5.0f;
+    MovementSpeed = 5.f;
     HP = MAXHP;
     Dead = false;
     DeadAlly = false;
@@ -52,6 +53,7 @@ void RangerEntity::StateCheck()
     if (HP <= 0)
     {
         RangerSM->SetState("Death");
+        Dead = true;
         return;
     }
         
@@ -66,14 +68,14 @@ void RangerEntity::StateCheck()
     {
         if (NearestEnemyDist < 5)
             RangerSM->SetState("Move");
-        if (NearEnemies >= 4)
-            RangerSM->SetState("Bomb");
+        /*if (NearEnemies >= 4)
+            RangerSM->SetState("Bomb");*/
     }
-    else if (RangerSM->GetState() == "Bomb")
+    /*else if (RangerSM->GetState() == "Bomb")
     {
         if (NearEnemies < 4)
             RangerSM->SetState("Shoot");
-    }
+    }*/
     else if (RangerSM->GetState() == "Death")
     {
         
@@ -103,7 +105,7 @@ void RangerEntity::StateRun()
     if (RangerSM->GetState() == "Move")
     {
         if (NearestEnemyDist > AttackRange)
-            Position += Entity_Manager->FindNearestEntity_Pos(Position, "Mob");
+            Position += Entity_Manager->FindNearestEntity_Pos(Position, "Mob") * MovementSpeed;
         else
             RangerSM->SetState("Shoot");
     }
@@ -115,10 +117,10 @@ void RangerEntity::StateRun()
             Entity_Manager->DecreaseEntityHP("Mob", AttackDamage);
         }
     }
-    else if (RangerSM->GetState() == "Bomb")
+    /*else if (RangerSM->GetState() == "Bomb")
     {
         
-    }
+    }*/
     else if (RangerSM->GetState() == "Death")
     {
 
@@ -136,6 +138,7 @@ void RangerEntity::StateRun()
 
 void RangerEntity::UpdateVariables(double dt)
 {
-    NearestEnemyDist = Entity_Manager->FindNearestEntity_Dist(Position, "Mob");
+    NearestEnemyDist = Entity_Manager->FindDistanceBetweenEntities(Position, "Mob");
     AttackReset_Timer += dt;
+    
 }

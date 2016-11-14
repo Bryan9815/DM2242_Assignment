@@ -33,7 +33,7 @@ float EntityManager::FindDistanceBetweenEntities(Vector3 Pos_of_finder, string N
     float temp(0.0f);
     for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
     {
-        if ((*it)->GetName() == Name_Of_Entity_To_Find)
+        if (((*it)->GetName() == Name_Of_Entity_To_Find) && (*it)->GetPosition() != Pos_of_finder)
         {
             float distsq = ((*it)->GetPosition() - Pos_of_finder).LengthSquared();
             if (temp > distsq)
