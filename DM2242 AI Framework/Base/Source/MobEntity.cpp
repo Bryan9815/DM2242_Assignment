@@ -25,6 +25,7 @@ void MobEntity::Init(EntityManager* EManager)
 	AttackRange = 1.5f;
 	Cooldown = 0.f;
 
+
 	Target = "";
 
 	//States
@@ -103,13 +104,14 @@ void MobEntity::DetermineTarget()
 void MobEntity::Update(double dt)
 {
 	DetermineTarget();
+    DistFromTarget = EManager->FindDistanceBetweenEntities(Position, Target);
 	// Chase Target
 	if (DistFromTarget > 1.5f)
 		MobSM.SetState("Chase Target");
 
 	// Attack
 	if (DistFromTarget <= 1.5f)
-		MobSM.SetState("AttacK");
+		MobSM.SetState("Attack");
 
 	// Dead
 	if (HP <= 0)
@@ -150,6 +152,7 @@ void MobEntity::Update(double dt)
 			EManager->DecreaseEntityHP(Target, Math::RandIntMinMax(20, 30));
 			Attack = false;
 		}
+        
     }
 	else if (MobSM.GetState() == "Knocked Back")
 	{

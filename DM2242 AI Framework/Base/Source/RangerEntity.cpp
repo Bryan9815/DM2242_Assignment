@@ -89,12 +89,12 @@ void RangerEntity::StateCheck()
     {        
         if (DeadAlly)
             RangerSM.SetState("Revive");        
-        if (NearestEnemyDist <= 5)
+        if (NearestEnemyDist <= 7)
             RangerSM.SetState("Shoot");
     }
     else if (RangerSM.GetState() == "Shoot")
     {
-        if (NearestEnemyDist > 5)
+        if (NearestEnemyDist > 7)
         {
             RangerSM.SetState("Move");
         }
@@ -142,7 +142,7 @@ void RangerEntity::StateRun(double dt)
     }
     else if (RangerSM.GetState() == "Shoot")
     {
-        if (NearestEnemyDist < 4.5)
+        if (NearestEnemyDist < 6.5)
         {
             Position += -(Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position).Normalize() * MovementSpeed * dt;
         }

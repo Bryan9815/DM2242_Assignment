@@ -228,7 +228,10 @@ void SceneAI::RenderEntity()
             modelStack.Scale(1, 1, 1);
             RenderMesh(meshList[GEO_RANGER], false);
 
+            RangerEntity* tempRanger = dynamic_cast<RangerEntity*>((*it));
+
             Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), tempRanger->RangerSM.GetState());//render state
         }
         else if ((*it)->GetName() == "Warrior")
         {
@@ -236,17 +239,24 @@ void SceneAI::RenderEntity()
             modelStack.Translate(temp.x, temp.y, temp.z);
             modelStack.Scale(1, 1, 1);
             RenderMesh(meshList[GEO_WARRIOR], false);
+
+            Warrior* tempWarrior = dynamic_cast<Warrior*>((*it));
+
             Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), tempWarrior->WarriorSM.GetState());//render state
 
         }
         else if ((*it)->GetName() == "Mob")
         {
             Vector3 temp = (*it)->GetPosition();
             modelStack.Translate(temp.x, temp.y, temp.z);
-            modelStack.Scale(3, 3, 3);
+            modelStack.Scale(2, 2, 2);
             RenderMesh(meshList[GEO_MOB], false);
-            Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
 
+            MobEntity* tempMob = dynamic_cast<MobEntity*>((*it));
+
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 8, 2.f, Color(1, 1, 1), tempMob->MobSM.GetState());//render state
         }
         else if ((*it)->GetName() == "Healer")
         {

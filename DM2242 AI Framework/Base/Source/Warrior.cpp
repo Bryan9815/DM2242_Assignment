@@ -116,6 +116,7 @@ void Warrior::Update(double dt)
 		Vector3 temp;
 		temp = EManager->FindNearestEntity_Pos(Position, "Mob");
 		Position += -(Position - temp).Normalize() * Speed * dt;
+
 	}
 	else if (WarriorSM.GetState() == "Attack")
 	{
@@ -127,6 +128,13 @@ void Warrior::Update(double dt)
 			EManager->IncreaseEntityAggro("Warrior", temp);
 			Attack = false;
 		}
+
+        /*if (EManager->FindDistanceBetweenEntities("Warrior", "Mob") < AttackRange - 0.2f)
+        {
+            Vector3 temp;
+            temp = EManager->FindNearestEntity_Pos("Warrior", "Mob");
+            Position += (Position - temp).Normalize() * Speed * dt;
+        }*/
 	}
 	else if (WarriorSM.GetState() == "Knocking Back")
 	{
