@@ -1,5 +1,6 @@
 #include "Warrior.h"
 #include "MobEntity.h"
+
 Warrior::Warrior()
 {
 
@@ -9,20 +10,6 @@ Warrior::~Warrior()
 {
 	Delete();
 }
-
-//{
-//    MobEntity* tempmob;
-//    for (interation : entitylist)
-//    {
-//        if ((*it)->GetNAme() == MobName)
-//        {
-//            tempmob = dynamic_cast<MobEntity*>((*it));
-//            break;
-//        }    
-//
-//    }
-//    tempmob->
-//}
 
 void Warrior::Init(EntityManager* EManager)
 {
@@ -38,7 +25,7 @@ void Warrior::Init(EntityManager* EManager)
 	DeadAlly = false;
 	WarriorSM.AddState("Chase Enemy");
 	WarriorSM.AddState("Attack");
-	WarriorSM.AddState("Knockback");
+	WarriorSM.AddState("Knocking Back");
 	WarriorSM.AddState("Revive");
 	WarriorSM.AddState("Dead");
 
@@ -59,7 +46,7 @@ void Warrior::Init(EntityManager* EManager, Vector3 startpos)
     DeadAlly = false;
     WarriorSM.AddState("Chase Enemy");
     WarriorSM.AddState("Attack");
-    WarriorSM.AddState("Knockback");
+    WarriorSM.AddState("Knocking Back");
     WarriorSM.AddState("Revive");
     WarriorSM.AddState("Dead");
 
@@ -68,6 +55,8 @@ void Warrior::Init(EntityManager* EManager, Vector3 startpos)
 
 void Warrior::Update(double dt)
 {
+	WarriorMobDist = EManager->FindDistanceBetweenEntities(Position, "Mob");
+	
 	// Chase Enemy
 	if (WarriorMobDist > AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Chase Enemy");
@@ -76,9 +65,9 @@ void Warrior::Update(double dt)
 	if (WarriorMobDist <= AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Attack");
 
-	// Knockback
+	// Knocking Back
 	if (AllyMobDist <= AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
-		WarriorSM.SetState("Knockback");
+		WarriorSM.SetState("Knocking Back");
 
 	// Revive
 	if (DeadAlly)
@@ -114,11 +103,14 @@ void Warrior::Update(double dt)
 	{
 		if (Attack)
 		{
-			EManager->DecreaseEntityHP("Mob", Math::RandIntMinMax(5, 15));
+			int temp = 0;
+			temp = Math::RandIntMinMax(5, 15);
+			EManager->DecreaseEntityHP("Mob", temp);
+			EManager->IncreaseEntityAggro("Warrior", temp);
 			Attack = false;
 		}
 	}
-	else if (WarriorSM.GetState() == "Knockback")
+	else if (WarriorSM.GetState() == "Knocking Back")
 	{
 		
 	}

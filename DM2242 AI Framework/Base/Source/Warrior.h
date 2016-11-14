@@ -13,6 +13,8 @@ public:
     void Init(EntityManager* EManager, Vector3 startpos);
 	void Update(double dt);
 	void Delete();
+
+	StateMachine WarriorSM;
 private:
 	bool DeadAlly;
 	bool EnemyNearAlly;
@@ -24,7 +26,6 @@ private:
 	float AttackRange;
 	float Cooldown;
 
-	StateMachine WarriorSM;
 	EntityManager* EManager;
 };
 

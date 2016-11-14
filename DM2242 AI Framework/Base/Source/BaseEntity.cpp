@@ -20,6 +20,16 @@ void BaseEntity::SetHP(int hp)
 	HP = hp;
 }
 
+unsigned int BaseEntity::GetAggro()
+{
+	return Aggro;
+}
+
+void BaseEntity::SetAggro(unsigned int aggro)
+{
+	Aggro = aggro;
+}
+
 bool BaseEntity::GetDead()
 {
 	return Dead;

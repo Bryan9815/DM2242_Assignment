@@ -12,6 +12,8 @@ public:
     virtual void Update(double dt){};
     virtual int GetHP();
     virtual void SetHP(int hp);
+	virtual unsigned int GetAggro();
+	virtual void SetAggro(unsigned int aggro);
     virtual bool GetDead();
     virtual void SetDead(bool dead);
     virtual void Delete() = 0;
@@ -21,6 +23,7 @@ public:
     virtual std::string GetName();
 protected:
     int HP;
+	unsigned int Aggro;
     bool Dead;
     Vector3 Position;
     std::string Name;
