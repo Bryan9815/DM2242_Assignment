@@ -14,9 +14,16 @@ void EntityManager::Init()
 {
 
 }
-void EntityManager::Update()
+void EntityManager::Update(double dt)
 {
-
+    /*for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        (*it)->Update();
+    }*/
+    for (int i = 0; i < (int)EntityList.size(); ++i)
+    {
+        EntityList[i]->Update(dt);
+    }
 }
 
 void EntityManager::AddEntity(BaseEntity* Entity_To_Add)

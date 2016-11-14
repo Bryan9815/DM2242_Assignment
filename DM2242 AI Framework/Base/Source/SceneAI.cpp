@@ -146,6 +146,8 @@ void SceneAI::Update(double dt)
 {
 	SceneBase::Update(dt);
 
+    //Entity Update
+    Entity_Manager->Update(dt);
 }
 
 

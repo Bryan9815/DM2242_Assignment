@@ -10,7 +10,7 @@ public:
     ~EntityManager();
 
     void Init();
-    void Update();
+    void Update(double dt);
     void AddEntity(BaseEntity* Entity_To_Add);
     void RemoveEntity(string Name_of_Entity_Removed);
     float FindDistanceBetweenEntities(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find);
