@@ -11,7 +11,7 @@ MobEntity::~MobEntity()
 {
     Delete();
 }
-void MobEntity::Init()
+void MobEntity::Init(EntityManager* EManager)
 {
     Name = "Mob";
     HP = 300;
@@ -39,8 +39,44 @@ void MobEntity::Init()
 	//States
     MobSM.AddState("Chase Target");
     MobSM.AddState("Attack");
-    MobSM.SetState("Stunned");
+    MobSM.AddState("Stunned");
     MobSM.AddState("Dead");
+
+    MobSM.SetState("Chase Target");
+}
+
+void MobEntity::Init(EntityManager* EManager, Vector3 startpos)
+{
+    Name = "Mob";
+    HP = 300;
+    Dead = false;
+    Attack = true;
+    SetPosition(startpos);
+    Speed = 5.f;
+    AttackRange = 1.5f;
+    Cooldown = 0.f;
+
+    Target = "";
+
+    WarriorAggro = 0;
+    HealerAggro = 0;
+    RangerAggro = 0;
+
+    WarriorTrigger = false;
+    HealerTrigger = false;
+    RangerTrigger = false;
+
+    WarriorKill = false;
+    HealerKill = false;
+    RangerKill = false;
+
+    //States
+    MobSM.AddState("Chase Target");
+    MobSM.AddState("Attack");
+    MobSM.AddState("Stunned");
+    MobSM.AddState("Dead");
+
+    MobSM.SetState("Chase Target");
 }
 
 void MobEntity::DetermineTarget()
@@ -101,14 +137,14 @@ void MobEntity::Update(double dt)
     if (MobSM.GetState() == "Chase Target")
     {
 		Vector3 temp;
-		temp = EManager.FindNearestEntity_Pos(Position, Target);
+		temp = EManager->FindNearestEntity_Pos(Position, Target);
 		Position += (Position - temp) * Speed * dt;
     }
     else if (MobSM.GetState() == "Attack")
     {
 		if (Attack)
 		{
-			EManager.DecreaseEntityHP(Target, Math::RandIntMinMax(20, 30));
+			EManager->DecreaseEntityHP(Target, Math::RandIntMinMax(20, 30));
 			Attack = false;
 		}
     }

@@ -9,7 +9,8 @@ public:
     MobEntity();
     ~MobEntity();
 
-    void Init();
+    void Init(EntityManager* EManager);
+    void Init(EntityManager* EManager, Vector3 startpos);
     void Update(double dt);
     void Delete();
 
@@ -27,7 +28,7 @@ private:
 	float Cooldown;
 
     StateMachine MobSM;
-	EntityManager EManager;
+	EntityManager* EManager;
 };
 
 #endif

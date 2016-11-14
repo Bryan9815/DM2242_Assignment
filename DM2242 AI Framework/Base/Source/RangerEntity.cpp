@@ -12,11 +12,11 @@ RangerEntity::~RangerEntity()
 {
     Delete();
 }
-void RangerEntity::Init(/*EntityManager* Entity_Manager*/)
+void RangerEntity::Init(EntityManager* Entity_Manager)
 {
     Name = "Ranger";
     SetPosition(STARTPOS);
-    //this->Entity_Manager = Entity_Manager;
+    this->Entity_Manager = Entity_Manager;
     AttackRange = 5.0f;
     AttackDamage = 5.0f;
     MovementSpeed = 5.f;
@@ -33,7 +33,33 @@ void RangerEntity::Init(/*EntityManager* Entity_Manager*/)
     RangerSM.AddState("Bomb");
     RangerSM.AddState("Revive");
 
-    //RangerSM.SetState("Move");
+    RangerSM.SetState("Move");
+
+    AttackReset_Timer = 0;
+}
+
+void RangerEntity::Init(EntityManager* Entity_Manager, Vector3 startpos)
+{
+    Name = "Ranger";
+    SetPosition(startpos);
+    this->Entity_Manager = Entity_Manager;
+    AttackRange = 5.0f;
+    AttackDamage = 5.0f;
+    MovementSpeed = 5.f;
+    HP = MAXHP;
+    Dead = false;
+    DeadAlly = false;
+    NearestEnemyDist = 0;
+    NearestDeadAllyDist = 0;
+    NearEnemies = 0;
+    RangerSM.Init();
+    RangerSM.AddState("Move");
+    RangerSM.AddState("Shoot");
+    RangerSM.AddState("Death");
+    RangerSM.AddState("Bomb");
+    RangerSM.AddState("Revive");
+
+    RangerSM.SetState("Move");
 
     AttackReset_Timer = 0;
 }

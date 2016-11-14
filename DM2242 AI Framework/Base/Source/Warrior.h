@@ -9,7 +9,8 @@ public:
 	Warrior();
 	~Warrior();
 
-	void Init();
+    void Init(EntityManager* EManager);
+    void Init(EntityManager* EManager, Vector3 startpos);
 	void Update(double dt);
 	void Delete();
 private:
@@ -24,7 +25,7 @@ private:
 	float Cooldown;
 
 	StateMachine WarriorSM;
-	EntityManager EManager;
+	EntityManager* EManager;
 };
 
 #endif

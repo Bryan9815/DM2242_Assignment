@@ -7,7 +7,8 @@ public:
     RangerEntity();
     ~RangerEntity();
 
-    void Init(/*EntityManager* Entity_Manager*/);
+    void Init(EntityManager* Entity_Manager);
+    void Init(EntityManager* Entity_Manager, Vector3 startpos);
     void Update(double dt);
     void Delete();
     void StateCheck();

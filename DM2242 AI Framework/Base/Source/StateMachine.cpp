@@ -66,7 +66,7 @@ void StateMachine::SetState(std::string state_name)
     {
         if ((*it)->Name == state_name)
         {
-            for (std::vector<State*>::iterator it2 = StateList.begin(); it != StateList.end(); ++it)
+            for (std::vector<State*>::iterator it2 = StateList.begin(); it2 != StateList.end(); ++it2)
             {
                 if ((*it2)->active)
                 {
