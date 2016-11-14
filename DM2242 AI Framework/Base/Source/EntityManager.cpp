@@ -62,3 +62,14 @@ Vector3 EntityManager::FindNearestEntity_Pos(Vector3 Pos_of_finder, string Name_
     }
     return tempEntity->GetPosition();
 }
+
+void EntityManager::DecreaseEntityHP(string Name_Of_Entity_To_Find, int amount_to_decrease)
+{
+    for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if ((*it)->GetName() == Name_Of_Entity_To_Find)
+        {
+            (*it)->SetHP((*it)->GetHP() - amount_to_decrease);
+        }
+    }
+}
