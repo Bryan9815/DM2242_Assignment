@@ -31,8 +31,6 @@ void Warrior::Init(EntityManager* EManager)
 	WarriorSM.AddState("Revive");
 	WarriorSM.AddState("Dead");
 
-	WarriorSM.SetState("Chase Enemy");
-
 	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
 	{
 		if ((*it)->GetName() == "Mob")//entity to find
@@ -60,8 +58,6 @@ void Warrior::Init(EntityManager* EManager, Vector3 startpos)
     WarriorSM.AddState("Knocking Back");
     WarriorSM.AddState("Revive");
     WarriorSM.AddState("Dead");
-
-    WarriorSM.SetState("Chase Enemy");
 
 	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
 	{
