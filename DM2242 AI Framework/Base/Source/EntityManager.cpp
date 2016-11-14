@@ -45,13 +45,48 @@ void EntityManager::RemoveEntity(string Name_of_Entity_Removed)
 float EntityManager::FindDistanceBetweenEntities(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find)
 {
     float temp(0.0f);
+    int count = 0;
     for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
     {
         if (((*it)->GetName() == Name_Of_Entity_To_Find) && (*it)->GetPosition() != Pos_of_finder)
         {
-            float distsq = ((*it)->GetPosition() - Pos_of_finder).LengthSquared();
-            if (temp > distsq)
-                temp = distsq;
+            Vector3 t1((*it)->GetPosition());
+            Vector3 t2(Pos_of_finder);
+            Vector3 distsq = (t1 - t2);
+            float distsqF = distsq.Length();
+            if (temp > distsqF || count == 0)
+            {
+                temp = distsqF;
+                count++;
+            }                
+        }
+    }
+    return temp;
+}
+
+float EntityManager::FindDistanceBetweenEntities(string Name_Of_Finder, string Name_Of_Entity_To_Find)
+{
+    float temp(0.0f);
+    int count = 0;
+    for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if (((*it)->GetName() == Name_Of_Entity_To_Find))//entity to find
+        {
+            for (vector<BaseEntity*>::iterator it2 = EntityList.begin(); it2 != EntityList.end(); ++it2)
+            {
+                if ((*it2)->GetName() == Name_Of_Finder)//finder
+                {
+                    Vector3 t1((*it)->GetPosition());
+                    Vector3 t2((*it2)->GetPosition());
+                    Vector3 distsq = (t1 - t2);
+                    float distsqF = distsq.Length();
+                    if (temp > distsqF || count == 0)
+                    {
+                        temp = distsqF;
+                        count++;
+                    }
+                }                
+            }            
         }
     }
     return temp;
@@ -60,20 +95,55 @@ float EntityManager::FindDistanceBetweenEntities(Vector3 Pos_of_finder, string N
 Vector3 EntityManager::FindNearestEntity_Pos(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find)
 {
     float temp(0.0f);
+    int count = 0;
     BaseEntity* tempEntity;
     for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
     {
         if ((*it)->GetName() == Name_Of_Entity_To_Find)
         {
             float distsq = ((*it)->GetPosition() - Pos_of_finder).LengthSquared();
-            if (temp > distsq)
+            if (temp > distsq || count == 0)
             {
                 temp = distsq;
                 tempEntity = (*it);
+                count++;
             }
                 
         }
     }
+    if (count == 0)
+        return NULL;
+    return tempEntity->GetPosition();
+}
+
+Vector3 EntityManager::FindNearestEntity_Pos(string Name_Of_Finder, string Name_Of_Entity_To_Find)
+{
+    float temp(0.0f);
+    int count = 0;
+    BaseEntity* tempEntity;
+    for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if ((*it)->GetName() == Name_Of_Entity_To_Find)//entity to find
+        {
+            for (vector<BaseEntity*>::iterator it2 = EntityList.begin(); it2 != EntityList.end(); ++it2)
+            {
+                if ((*it2)->GetName() == Name_Of_Finder)//finder
+                {
+                    float distsq = ((*it)->GetPosition() - (*it2)->GetPosition()).LengthSquared();
+                    if (temp > distsq || count == 0)
+                    {
+                        temp = distsq;
+                        tempEntity = (*it);
+                        count++;
+                    }
+                }
+            }
+            
+
+        }
+    }
+    if (count == 0)
+        return NULL;
     return tempEntity->GetPosition();
 }
 

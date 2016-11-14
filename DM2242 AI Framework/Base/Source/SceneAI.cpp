@@ -148,6 +148,15 @@ void SceneAI::Update(double dt)
 
     //Entity Update
     Entity_Manager->Update(dt);
+
+    Warrior* wartemp;
+    for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
+    {
+        
+        if ((*it)->GetName() == "Warrior")
+            wartemp = dynamic_cast<Warrior*>((*it));
+    }
+    wartemp = NULL;
 }
 
 
@@ -235,6 +244,13 @@ void SceneAI::RenderEntity()
         modelStack.PopMatrix();
     }
     
+}
+
+void SceneAI::Insert_Text_From_Here(float x, float y, float size, Color colour, string text)
+{
+    modelStack.PushMatrix();
+    RenderTextOnScreen()
+    modelStack.PopMatrix();
 }
 
 void SceneAI::Exit()

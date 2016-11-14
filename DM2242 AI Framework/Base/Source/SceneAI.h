@@ -23,6 +23,7 @@ public:
     void RenderEntity();
 	virtual void Exit();
 
+    void Insert_Text_From_Here(float x, float y, float size, Color colour, string text);
 	void RenderGO(GameObject *go);
 
 	GameObject* FetchGO();
