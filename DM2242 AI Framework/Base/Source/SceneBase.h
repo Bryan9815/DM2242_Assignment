@@ -55,6 +55,11 @@ public:
 		GEO_MISSILE,
 		GEO_ASTEROID,
 		GEO_ESHIP,
+
+        //Entities
+        GEO_WARRIOR,
+        GEO_RANGER,
+        GEO_MOB,
 		NUM_GEOMETRY,
 	};
 public:

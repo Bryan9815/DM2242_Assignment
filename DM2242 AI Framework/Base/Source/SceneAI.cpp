@@ -33,10 +33,14 @@ void SceneAI::Init()
     Entity_Manager = new EntityManager();
     Entity_Manager->Init();
     Ranger = new RangerEntity();
-    Entity_Manager->AddEntity(Ranger);
+    Ranger->Init();
+    Entity_Manager->AddEntity(static_cast<BaseEntity*>(Ranger));
     warrior = new Warrior();
+    warrior->Init();
     Entity_Manager->AddEntity(warrior);
-
+    mob = new MobEntity();
+    mob->Init();
+    Entity_Manager->AddEntity(mob);
 }
 
 GameObject* SceneAI::FetchGO()
@@ -191,7 +195,45 @@ void SceneAI::Render()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack.LoadIdentity();
 
+    RenderEntity();
 
+}
+
+void SceneAI::RenderEntity()
+{
+    
+    for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
+    {
+        modelStack.PushMatrix();
+        if ((*it)->GetName() == "Ranger")
+        {
+            modelStack.Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+            modelStack.Scale(1, 1, 1);
+            RenderMesh(meshList[GEO_RANGER], false);
+        }
+        else if ((*it)->GetName() == "Warrior")
+        {
+            modelStack.Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+            modelStack.Scale(1, 1, 1);
+            RenderMesh(meshList[GEO_WARRIOR], false);
+        }
+        else if ((*it)->GetName() == "Mob")
+        {
+            modelStack.Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+            modelStack.Scale(3, 3, 3);
+            RenderMesh(meshList[GEO_MOB], false);
+        }
+        else if ((*it)->GetName() == "Healer")
+        {
+
+        }
+        else
+        {
+
+        }
+        modelStack.PopMatrix();
+    }
+    
 }
 
 void SceneAI::Exit()

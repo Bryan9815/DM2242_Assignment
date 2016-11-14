@@ -7,9 +7,7 @@ public:
     RangerEntity();
     ~RangerEntity();
 
-    void Init();
-    void Init(EntityManager* Entity_Manager);
-    void Update();
+    void Init(/*EntityManager* Entity_Manager*/);
     void Update(double dt);
     void Delete();
     void StateCheck();
@@ -22,7 +20,7 @@ private:
     float NearestDeadAllyDist;
     float NearestEnemyDist;
     int NearEnemies;
-    StateMachine *RangerSM;
+    StateMachine RangerSM;
     EntityManager* Entity_Manager;
     float AttackRange;
     float AttackReset_Timer;

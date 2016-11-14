@@ -12,8 +12,9 @@ Warrior::~Warrior()
 
 void Warrior::Init()
 {
+    Name = "Warrior";
 	HP = 100;
-	SetPosition(Vector3(0, -40, 0));
+	SetPosition(Vector3(0, 40, 0));
 	Speed = 6.f;
 	AttackRange = 2.f;
 	Attack = true;
@@ -26,7 +27,7 @@ void Warrior::Init()
 	WarriorSM.AddState("Revive");
 	WarriorSM.AddState("Dead");
 
-	WarriorSM.SetState("Chase Enemy");
+	//WarriorSM.SetState("Chase Enemy");
 }
 
 void Warrior::Update(double dt)
@@ -70,14 +71,14 @@ void Warrior::Update(double dt)
 	if (WarriorSM.GetState() == "Chase Enemy")
 	{
 		Vector3 temp;
-		temp = EManager.FindNearestEntity_Pos(Position, "Monster");
+		temp = EManager.FindNearestEntity_Pos(Position, "Mob");
 		Position += (Position - temp) * Speed * dt;
 	}
 	else if (WarriorSM.GetState() == "Attack")
 	{
 		if (Attack)
 		{
-			EManager.DecreaseEntityHP("Monster", Math::RandIntMinMax(5, 15));
+			EManager.DecreaseEntityHP("Mob", Math::RandIntMinMax(5, 15));
 			Attack = false;
 		}
 	}

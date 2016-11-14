@@ -52,6 +52,7 @@ protected:
     EntityManager* Entity_Manager;
     RangerEntity* Ranger;
     Warrior* warrior;
+    MobEntity* mob;
 };
 
 #endif

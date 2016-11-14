@@ -1,6 +1,6 @@
 #include "RangerEntity.h"
 #define MAXHP 100
-#define STARTPOS Vector3(10,-45,0)
+#define STARTPOS Vector3(10,45,0)
 #define TIME_BETWEEN_ATTACKS 1.0f
 
 RangerEntity::RangerEntity()
@@ -12,10 +12,11 @@ RangerEntity::~RangerEntity()
 {
     Delete();
 }
-void RangerEntity::Init(EntityManager* Entity_Manager)
+void RangerEntity::Init(/*EntityManager* Entity_Manager*/)
 {
+    Name = "Ranger";
     SetPosition(STARTPOS);
-    this->Entity_Manager = Entity_Manager;
+    //this->Entity_Manager = Entity_Manager;
     AttackRange = 5.0f;
     AttackDamage = 5.0f;
     MovementSpeed = 5.f;
@@ -25,14 +26,14 @@ void RangerEntity::Init(EntityManager* Entity_Manager)
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;
     NearEnemies = 0;
-    RangerSM = new StateMachine();
-    RangerSM->Init();
-    RangerSM->AddState("Move");
-    RangerSM->AddState("Shoot");
-    RangerSM->AddState("Death"); 
-    RangerSM->AddState("Bomb");
-    RangerSM->AddState("Revive");
-    RangerSM->SetState("Move");
+    RangerSM.Init();
+    RangerSM.AddState("Move");
+    RangerSM.AddState("Shoot");
+    RangerSM.AddState("Death"); 
+    RangerSM.AddState("Bomb");
+    RangerSM.AddState("Revive");
+
+    //RangerSM.SetState("Move");
 
     AttackReset_Timer = 0;
 }
@@ -52,38 +53,38 @@ void RangerEntity::StateCheck()
 {
     if (HP <= 0)
     {
-        RangerSM->SetState("Death");
+        RangerSM.SetState("Death");
         Dead = true;
         return;
     }
         
-    if (RangerSM->GetState() == "Move")
+    if (RangerSM.GetState() == "Move")
     {        
         if (DeadAlly)
-            RangerSM->SetState("Revive");        
+            RangerSM.SetState("Revive");        
         if (NearestEnemyDist >= 5)
-            RangerSM->SetState("Shoot");
+            RangerSM.SetState("Shoot");
     }
-    else if (RangerSM->GetState() == "Shoot")
+    else if (RangerSM.GetState() == "Shoot")
     {
         if (NearestEnemyDist < 5)
-            RangerSM->SetState("Move");
+            RangerSM.SetState("Move");
         /*if (NearEnemies >= 4)
-            RangerSM->SetState("Bomb");*/
+            RangerSM.SetState("Bomb");*/
     }
-    /*else if (RangerSM->GetState() == "Bomb")
+    /*else if (RangerSM.GetState() == "Bomb")
     {
         if (NearEnemies < 4)
-            RangerSM->SetState("Shoot");
+            RangerSM.SetState("Shoot");
     }*/
-    else if (RangerSM->GetState() == "Death")
+    else if (RangerSM.GetState() == "Death")
     {
         
     }    
-    else if (RangerSM->GetState() == "Revive")
+    else if (RangerSM.GetState() == "Revive")
     {
         if (!DeadAlly)
-            RangerSM->SetState("Move");
+            RangerSM.SetState("Move");
     }
     else
     {
@@ -93,23 +94,23 @@ void RangerEntity::StateCheck()
 
 void RangerEntity::Revive()
 {
-    if (RangerSM->GetState() == "Death")
+    if (RangerSM.GetState() == "Death")
     {
         HP = MAXHP;
-        RangerSM->SetState("Move");
+        RangerSM.SetState("Move");
     }    
 }
 
 void RangerEntity::StateRun(double dt)
 {
-    if (RangerSM->GetState() == "Move")
+    if (RangerSM.GetState() == "Move")
     {
         if (NearestEnemyDist > AttackRange)
             Position += Entity_Manager->FindNearestEntity_Pos(Position, "Mob") * MovementSpeed;
         else
-            RangerSM->SetState("Shoot");
+            RangerSM.SetState("Shoot");
     }
-    else if (RangerSM->GetState() == "Shoot")
+    else if (RangerSM.GetState() == "Shoot")
     {
         if (AttackReset_Timer > TIME_BETWEEN_ATTACKS)
         {
@@ -117,15 +118,15 @@ void RangerEntity::StateRun(double dt)
             Entity_Manager->DecreaseEntityHP("Mob", AttackDamage);
         }
     }
-    /*else if (RangerSM->GetState() == "Bomb")
+    /*else if (RangerSM.GetState() == "Bomb")
     {
         
     }*/
-    else if (RangerSM->GetState() == "Death")
+    else if (RangerSM.GetState() == "Death")
     {
 
     }
-    else if (RangerSM->GetState() == "Revive")
+    else if (RangerSM.GetState() == "Revive")
     {
         
     }

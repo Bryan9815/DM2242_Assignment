@@ -13,10 +13,11 @@ MobEntity::~MobEntity()
 }
 void MobEntity::Init()
 {
+    Name = "Mob";
     HP = 300;
     Dead = false;
 	Attack = true;
-	SetPosition(Vector3(0, 0, 0));
+	SetPosition(Vector3(50, 50, 0));
 	Speed = 5.f;
 	AttackRange = 1.5f;
 	Cooldown = 0.f;

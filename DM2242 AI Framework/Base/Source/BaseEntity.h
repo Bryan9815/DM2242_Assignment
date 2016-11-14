@@ -8,8 +8,8 @@ class BaseEntity
 public:
     BaseEntity();
     virtual ~BaseEntity();
-    virtual void Init() = 0;
-    virtual void Update() = 0;
+    virtual void Init(){};
+    virtual void Update(){};
     virtual int GetHP();
     virtual void SetHP(int hp);
     virtual bool GetDead();
