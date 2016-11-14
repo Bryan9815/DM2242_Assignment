@@ -34,7 +34,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager)
 
     AttackReset_Timer = 0;
 }
-void RangerEntity::Update()
+void RangerEntity::Update(double dt)
 {
     UpdateVariables();
     StateCheck();
@@ -108,7 +108,8 @@ void RangerEntity::StateRun()
     }
     else if (RangerSM->GetState() == "Shoot")
     {
-        
+        if (AttackReset_Timer > TIME_BETWEEN_ATTACKS)
+
     }
     else if (RangerSM->GetState() == "Bomb")
     {
@@ -129,8 +130,8 @@ void RangerEntity::StateRun()
 }
 
 
-void RangerEntity::UpdateVariables()
+void RangerEntity::UpdateVariables(double dt)
 {
     NearestEnemyDist = Entity_Manager->FindNearestEntity_Dist(Position, "Mob");
-    AttackReset_Timer 
+    AttackReset_Timer += dt;
 }

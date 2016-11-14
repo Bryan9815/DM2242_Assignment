@@ -8,11 +8,11 @@ public:
     ~RangerEntity();
 
     void Init(EntityManager* Entity_Manager);
-    void Update();
+    void Update(double dt);
     void Delete();
     void StateCheck();
     void StateRun();
-    void UpdateVariables();
+    void UpdateVariables(double dt);
     void Revive();
     
 private:
