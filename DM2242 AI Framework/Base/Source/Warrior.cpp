@@ -1,6 +1,8 @@
 #include "Warrior.h"
 #include "MobEntity.h"
 
+MobEntity *Mob;
+
 Warrior::Warrior()
 {
 
@@ -30,6 +32,15 @@ void Warrior::Init(EntityManager* EManager)
 	WarriorSM.AddState("Dead");
 
 	WarriorSM.SetState("Chase Enemy");
+
+	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
+	{
+		if ((*it)->GetName() == "Mob")//entity to find
+		{
+			Mob = dynamic_cast<MobEntity*>((*it));
+			break;
+		}
+	}
 }
 
 void Warrior::Init(EntityManager* EManager, Vector3 startpos)
@@ -51,22 +62,33 @@ void Warrior::Init(EntityManager* EManager, Vector3 startpos)
     WarriorSM.AddState("Dead");
 
     WarriorSM.SetState("Chase Enemy");
+
+	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
+	{
+		if ((*it)->GetName() == "Mob")//entity to find
+		{
+			Mob = dynamic_cast<MobEntity*>((*it));
+			break;
+		}
+	}
 }
 
 void Warrior::Update(double dt)
 {
 	WarriorMobDist = EManager->FindDistanceBetweenEntities(Position, "Mob");
-	
+	RangerMobDist = EManager->FindDistanceBetweenEntities("Ranger", "Mob");
+	HealerMobDist = EManager->FindDistanceBetweenEntities("Healer", "Mob");
+
 	// Chase Enemy
 	if (WarriorMobDist > AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Chase Enemy");
 
 	// Attack
-	if (WarriorMobDist <= AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
+	if (WarriorMobDist <= AttackRange && WarriorSM.GetState() != "Knocking Back" && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Attack");
 
 	// Knocking Back
-	if (AllyMobDist <= AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
+	if ((RangerMobDist <= 3.f && HealerMobDist <= 3.f) && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Knocking Back");
 
 	// Revive
@@ -112,7 +134,18 @@ void Warrior::Update(double dt)
 	}
 	else if (WarriorSM.GetState() == "Knocking Back")
 	{
-		
+		if (WarriorMobDist > AttackRange)
+		{
+			Vector3 temp;
+			temp = EManager->FindNearestEntity_Pos(Position, "Mob");
+			Position += (Position - temp) * Speed * dt;
+		}
+		else if (WarriorMobDist <= AttackRange)
+		{
+			EManager->DecreaseEntityHP("Mob", 5);
+			EManager->IncreaseEntityAggro("Warrior", 30);
+			Mob->MobSM.SetState("Knocked Back");
+		}
 	}
 	else if (WarriorSM.GetState() == "Revive")
 	{

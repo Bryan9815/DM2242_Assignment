@@ -168,3 +168,14 @@ void EntityManager::IncreaseEntityAggro(string Name_Of_Entity_To_Find, unsigned 
         }
     }
 }
+
+unsigned int EntityManager::FindEntityAggro(string Name_Of_Entity_To_Find)
+{
+	for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+	{
+		if ((*it)->GetName() == Name_Of_Entity_To_Find)
+		{
+			return (*it)->GetAggro();
+		}
+	}
+}
