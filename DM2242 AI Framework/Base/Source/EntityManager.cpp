@@ -28,7 +28,7 @@ void EntityManager::RemoveEntity()
 
 }
 
-float EntityManager::FindNearestEntity_Dist(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find)
+float EntityManager::FindDistanceBetweenEntities(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find)
 {
     float temp(0.0f);
     for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)

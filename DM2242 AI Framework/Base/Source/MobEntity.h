@@ -1,7 +1,7 @@
 #ifndef MOB_ENTITY_H
 #define MOB_ENTITY_H
-#include "BaseEntity.h"
-#include "StateMachine.h"
+
+#include "EntityManager.h"
 
 class MobEntity : public BaseEntity
 {
@@ -10,7 +10,7 @@ public:
     ~MobEntity();
 
     void Init();
-    void Update();
+    void Update(double dt);
     void Delete();
 
 	void DetermineTarget();
@@ -21,8 +21,10 @@ private:
 	unsigned int WarriorAggro, HealerAggro, RangerAggro;
 
 	float DistFromTarget;
+	float Speed;
 
     StateMachine MobSM;
+	EntityManager EManager;
 };
 
 #endif

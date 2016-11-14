@@ -1,8 +1,7 @@
 #ifndef WARRIOR_H
 #define WARRIOR_H
 
-#include "BaseEntity.h"
-#include "StateMachine.h"
+#include "EntityManager.h"
 
 class Warrior : public BaseEntity
 {
@@ -11,7 +10,7 @@ public:
 	~Warrior();
 
 	void Init();
-	void Update();
+	void Update(double dt);
 	void Delete();
 private:
 	bool DeadAlly;
@@ -21,6 +20,7 @@ private:
 	float AllyMobDist;
 
 	StateMachine WarriorSM;
+	EntityManager EManager;
 };
 
 #endif
