@@ -226,15 +226,21 @@ void SceneAI::RenderEntity()
         }
         else if ((*it)->GetName() == "Warrior")
         {
-            modelStack.Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+            Vector3 temp = (*it)->GetPosition();
+            modelStack.Translate(temp.x, temp.y, temp.z);
             modelStack.Scale(1, 1, 1);
             RenderMesh(meshList[GEO_WARRIOR], false);
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+
         }
         else if ((*it)->GetName() == "Mob")
         {
-            modelStack.Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+            Vector3 temp = (*it)->GetPosition();
+            modelStack.Translate(temp.x, temp.y, temp.z);
             modelStack.Scale(3, 3, 3);
             RenderMesh(meshList[GEO_MOB], false);
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 4.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+
         }
         else if ((*it)->GetName() == "Healer")
         {
