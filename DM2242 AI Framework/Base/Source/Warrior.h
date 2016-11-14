@@ -15,9 +15,13 @@ public:
 private:
 	bool DeadAlly;
 	bool EnemyNearAlly;
+	bool Attack;
 	
 	float WarriorMobDist;
 	float AllyMobDist;
+	float Speed;
+	float AttackRange;
+	float Cooldown;
 
 	StateMachine WarriorSM;
 	EntityManager EManager;

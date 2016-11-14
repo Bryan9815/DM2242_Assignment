@@ -13,7 +13,11 @@ Warrior::~Warrior()
 void Warrior::Init()
 {
 	HP = 100;
-	SetPosition(Vector3(0, 0, 0));
+	SetPosition(Vector3(0, -40, 0));
+	Speed = 6.f;
+	AttackRange = 2.f;
+	Attack = true;
+	Cooldown = 0.f;
 	Dead = false;
 	DeadAlly = false;
 	WarriorSM.AddState("Chase Enemy");
@@ -28,15 +32,15 @@ void Warrior::Init()
 void Warrior::Update(double dt)
 {
 	// Chase Enemy
-	if (WarriorMobDist > 2 && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
+	if (WarriorMobDist > AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Chase Enemy");
 
 	// Attack
-	if (WarriorMobDist <= 2 && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
+	if (WarriorMobDist <= AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Attack");
 
 	// Knockback
-	if (AllyMobDist <= 3 && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
+	if (AllyMobDist <= AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Knockback");
 
 	// Revive
@@ -51,14 +55,31 @@ void Warrior::Update(double dt)
 	if (Dead)
 		WarriorSM.SetState("Dead");
 
+	// Attack Cooldown
+	if (!Attack)
+	{
+		Cooldown += dt;
+	}
+	if (Cooldown >= 1.f)
+	{
+		Attack = true;
+		Cooldown = 0;
+	}
+
 	// States
 	if (WarriorSM.GetState() == "Chase Enemy")
 	{
-		
+		Vector3 temp;
+		temp = EManager.FindNearestEntity_Pos(Position, "Monster");
+		Position += (Position - temp) * Speed * dt;
 	}
 	else if (WarriorSM.GetState() == "Attack")
 	{
-
+		if (Attack)
+		{
+			EManager.DecreaseEntityHP("Monster", Math::RandIntMinMax(5, 15));
+			Attack = false;
+		}
 	}
 	else if (WarriorSM.GetState() == "Knockback")
 	{

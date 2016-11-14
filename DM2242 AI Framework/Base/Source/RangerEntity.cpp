@@ -40,7 +40,7 @@ void RangerEntity::Update(double dt)
 {
     UpdateVariables(dt);
     StateCheck();
-    StateRun(dt);
+    StateRun();
 }
 
 void RangerEntity::Delete()
@@ -100,12 +100,12 @@ void RangerEntity::Revive()
     }    
 }
 
-void RangerEntity::StateRun(double dt)
+void RangerEntity::StateRun()
 {
     if (RangerSM->GetState() == "Move")
     {
         if (NearestEnemyDist > AttackRange)
-            Position += (Position - Entity_Manager->FindNearestEntity_Pos(Position, "Mob")).Normalize()* dt * MovementSpeed;
+            Position += Entity_Manager->FindNearestEntity_Pos(Position, "Mob") * MovementSpeed;
         else
             RangerSM->SetState("Shoot");
     }
@@ -139,6 +139,6 @@ void RangerEntity::StateRun(double dt)
 void RangerEntity::UpdateVariables(double dt)
 {
     NearestEnemyDist = Entity_Manager->FindDistanceBetweenEntities(Position, "Mob");
-    if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
-        AttackReset_Timer += dt;    
+    AttackReset_Timer += dt;
+    
 }
