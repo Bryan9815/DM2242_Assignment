@@ -16,6 +16,7 @@ void MobEntity::Init()
     HP = 300;
     Dead = false;
     SetPosition(Vector3(0, 0, 0));
+	Speed = 5.f;
 
 	Target = "";
 
@@ -53,7 +54,7 @@ void MobEntity::DetermineTarget()
 		Target == "Ranger";
 }
 
-void MobEntity::Update()
+void MobEntity::Update(double dt)
 {
 	DetermineTarget();
 	// Chase Target
@@ -84,7 +85,8 @@ void MobEntity::Update()
 	// States
     if (MobSM.GetState() == "Chase Target")
     {
-		
+		Vector3 temp;
+		temp = EManager.FindNearestEntity_Dist(Position, Target);
     }
     else if (MobSM.GetState() == "Attack")
     {

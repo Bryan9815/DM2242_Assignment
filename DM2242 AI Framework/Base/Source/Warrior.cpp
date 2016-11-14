@@ -25,7 +25,7 @@ void Warrior::Init()
 	WarriorSM.SetState("Chase Enemy");
 }
 
-void Warrior::Update()
+void Warrior::Update(double dt)
 {
 	// Chase Enemy
 	if (WarriorMobDist > 2 && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
