@@ -85,6 +85,17 @@ void MobEntity::Update(double dt)
 	if (HP <= 0)
 		MobSM.SetState("Dead");
 
+	// Attack Cooldown
+	if (!Attack)
+	{
+		Cooldown += dt;
+	}
+	if (Cooldown >= 2.f)
+	{
+		Attack = true;
+		Cooldown = 0;
+	}
+
 	// States
     if (MobSM.GetState() == "Chase Target")
     {
@@ -94,7 +105,11 @@ void MobEntity::Update(double dt)
     }
     else if (MobSM.GetState() == "Attack")
     {
-
+		if (Attack)
+		{
+			EManager.DecreaseEntityHP(Target, Math::RandIntMinMax(20, 30));
+			Attack = false;
+		}
     }
 	else if (MobSM.GetState() == "Stunned")
 	{
