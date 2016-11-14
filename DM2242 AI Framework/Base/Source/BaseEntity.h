@@ -10,7 +10,7 @@ public:
     virtual ~BaseEntity();
     virtual void Init() = 0;
     virtual void Update() = 0;
-    virtual int GetHP() = 0;
+    virtual int GetHP();
     virtual void SetHP(int hp);
     virtual bool GetDead();
     virtual void SetDead(bool dead);

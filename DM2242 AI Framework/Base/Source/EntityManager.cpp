@@ -19,13 +19,20 @@ void EntityManager::Update()
 
 }
 
-void EntityManager::AddEntity()
+void EntityManager::AddEntity(BaseEntity* Entity_To_Add)
 {
-
+    EntityList.push_back(Entity_To_Add);
 }
-void EntityManager::RemoveEntity()
+void EntityManager::RemoveEntity(string Name_of_Entity_Removed)
 {
-
+    for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if ((*it)->GetName() == Name_of_Entity_Removed)
+        {
+            EntityList.erase(it);
+            return;
+        }
+    }
 }
 
 float EntityManager::FindDistanceBetweenEntities(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find)

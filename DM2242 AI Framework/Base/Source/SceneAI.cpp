@@ -29,6 +29,11 @@ void SceneAI::Init()
 	//Exercise 1: initialize m_objectCount
 	m_objectCount = 0;
 	m_ghost = new GameObject(GameObject::GO_BALL);
+
+    Entity_Manager = new EntityManager();
+    Entity_Manager->Init();
+    Ranger = new RangerEntity();
+    Entity_Manager->AddEntity(new RangerEntity());
 }
 
 GameObject* SceneAI::FetchGO()

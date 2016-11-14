@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include <vector>
 #include "SceneBase.h"
+#include "RangerEntity.h"
 
 class SceneAI : public SceneBase
 {
@@ -43,6 +44,9 @@ protected:
 	//Auditing
 	float m1, m2;
 	Vector3 u1, u2, v1, v2;
+
+    EntityManager* Entity_Manager;
+    RangerEntity* Ranger;
 };
 
 #endif

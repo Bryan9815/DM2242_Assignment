@@ -7,11 +7,13 @@ public:
     RangerEntity();
     ~RangerEntity();
 
+    void Init();
     void Init(EntityManager* Entity_Manager);
+    void Update();
     void Update(double dt);
     void Delete();
     void StateCheck();
-    void StateRun();
+    void StateRun(double dt);
     void UpdateVariables(double dt);
     void Revive();
     
