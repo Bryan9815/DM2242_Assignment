@@ -87,3 +87,14 @@ void EntityManager::DecreaseEntityHP(string Name_Of_Entity_To_Find, int amount_t
         }
     }
 }
+
+void EntityManager::IncreaseEntityAggro(string Name_Of_Entity_To_Find, unsigned int amount_to_increase)
+{
+	for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if ((*it)->GetName() == Name_Of_Entity_To_Find)
+        {
+            (*it)->SetAggro((*it)->GetAggro() + amount_to_increase);
+        }
+    }
+}

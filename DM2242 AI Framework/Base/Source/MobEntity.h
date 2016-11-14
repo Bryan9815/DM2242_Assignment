@@ -15,19 +15,20 @@ public:
     void Delete();
 
 	void DetermineTarget();
-private:
-	bool WarriorTrigger, HealerTrigger, RangerTrigger, WarriorKill, HealerKill, RangerKill, WarriorSkill;
-	bool Attack;
-	std::string Target;
 
-	unsigned int WarriorAggro, HealerAggro, RangerAggro;
+	bool Stunned;
+	StateMachine MobSM;
+private:
+	bool Attack;	
+	std::string Target;
 
 	float DistFromTarget;
 	float Speed;
 	float AttackRange;
 	float Cooldown;
+	float StunTimer;
 
-    StateMachine MobSM;
+    
 	EntityManager* EManager;
 };
 

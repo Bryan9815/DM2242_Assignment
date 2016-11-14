@@ -1,5 +1,5 @@
 #include "MobEntity.h"
-
+#include "Warrior.h"
 
 MobEntity::MobEntity()
 {
@@ -24,21 +24,10 @@ void MobEntity::Init(EntityManager* EManager)
 
 	Target = "";
 
-	WarriorAggro = 0;
-	HealerAggro = 0;
-	RangerAggro = 0;
-
-	WarriorTrigger = false;
-	HealerTrigger = false;
-	RangerTrigger = false;
-
-	WarriorKill = false;
-	HealerKill = false;
-	RangerKill = false;
-
 	//States
     MobSM.AddState("Chase Target");
     MobSM.AddState("Attack");
+	MobSM.AddState("Knocked Back");
     MobSM.AddState("Stunned");
     MobSM.AddState("Dead");
 
@@ -58,22 +47,11 @@ void MobEntity::Init(EntityManager* EManager, Vector3 startpos)
 
     Target = "";
 
-    WarriorAggro = 0;
-    HealerAggro = 0;
-    RangerAggro = 0;
-
-    WarriorTrigger = false;
-    HealerTrigger = false;
-    RangerTrigger = false;
-
-    WarriorKill = false;
-    HealerKill = false;
-    RangerKill = false;
-
     //States
     MobSM.AddState("Chase Target");
     MobSM.AddState("Attack");
-    MobSM.AddState("Stunned");
+	MobSM.AddState("Knocked Back");
+	MobSM.AddState("Stunned");
     MobSM.AddState("Dead");
 
     MobSM.SetState("Chase Target");
@@ -81,17 +59,8 @@ void MobEntity::Init(EntityManager* EManager, Vector3 startpos)
 
 void MobEntity::DetermineTarget()
 {
-	if (WarriorAggro == HealerAggro == RangerAggro)
-	{
-		// Go after closest target
-	}
-	// If 1 Hero has the highest Aggro
-	else if (WarriorAggro > HealerAggro && WarriorAggro > RangerAggro)
-		Target == "Warrior";
-	else if (HealerAggro > WarriorAggro && HealerAggro > RangerAggro)
-		Target == "Healer";
-	else if (RangerAggro > WarriorAggro && RangerAggro > HealerAggro)
-		Target == "Ranger";
+	// if aggro equal, go after closest target, else go after highest aggro
+
 }
 
 void MobEntity::Update(double dt)
@@ -106,17 +75,19 @@ void MobEntity::Update(double dt)
 		MobSM.SetState("AttacK");
 
 	// Stunned
-	if (WarriorSkill)
+	/*if (WarriorSkill)
 	{
-		float temp;
+		float temp = 0;
 		temp = Math::RandFloatMinMax(0, 101);
 		if (temp >= 46)
 		{
 			MobSM.SetState("Stunned");
-			WarriorAggro += 25;
+			WarriorAggro += 50;
 		}
+		else
+			WarriorAggro += 25;
 		WarriorSkill = false;
-	}
+	}*/
 
 	// Dead
 	if (HP <= 0)
@@ -131,6 +102,16 @@ void MobEntity::Update(double dt)
 	{
 		Attack = true;
 		Cooldown = 0;
+	}
+
+	// Stun Timer
+	if (Stunned)
+		StunTimer += dt;
+	if (StunTimer >= 3.f)
+	{
+		Stunned = false;
+		MobSM.SetState("Chase Target");
+		StunTimer = 0;
 	}
 
 	// States
@@ -148,9 +129,13 @@ void MobEntity::Update(double dt)
 			Attack = false;
 		}
     }
+	else if (MobSM.GetState() == "Knocked Back")
+	{
+
+	}
 	else if (MobSM.GetState() == "Stunned")
 	{
-		// Immobilized for 2 seconds
+		Stunned = true;
 	}
     else if (MobSM.GetState() == "Dead")
     {
