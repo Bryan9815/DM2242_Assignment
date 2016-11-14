@@ -17,6 +17,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager)
     SetPosition(STARTPOS);
     this->Entity_Manager = Entity_Manager;
     AttackRange = 5.0f;
+    AttackDamage = 5.0f;
     HP = MAXHP;
     Dead = false;
     DeadAlly = false;
@@ -36,7 +37,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager)
 }
 void RangerEntity::Update(double dt)
 {
-    UpdateVariables();
+    UpdateVariables(dt);
     StateCheck();
     StateRun();
 }
@@ -109,7 +110,10 @@ void RangerEntity::StateRun()
     else if (RangerSM->GetState() == "Shoot")
     {
         if (AttackReset_Timer > TIME_BETWEEN_ATTACKS)
-
+        {
+            AttackReset_Timer = 0;
+            Entity_Manager->DecreaseEntityHP("Mob", AttackDamage);
+        }
     }
     else if (RangerSM->GetState() == "Bomb")
     {

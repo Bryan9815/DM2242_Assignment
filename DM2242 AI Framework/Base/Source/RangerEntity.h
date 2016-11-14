@@ -24,6 +24,7 @@ private:
     EntityManager* Entity_Manager;
     float AttackRange;
     float AttackReset_Timer;
+    int AttackDamage;
 };
 
 #endif
