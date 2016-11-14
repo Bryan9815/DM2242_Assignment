@@ -15,8 +15,10 @@ public:
 	~SceneAI();
 
 	virtual void Init();
+    void InitEntity();
 	virtual void Update(double dt);
 	virtual void Render();
+    void RenderEntity();
 	virtual void Exit();
 
 	void RenderGO(GameObject *go);

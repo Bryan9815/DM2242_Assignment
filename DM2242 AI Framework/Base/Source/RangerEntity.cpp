@@ -139,5 +139,6 @@ void RangerEntity::StateRun(double dt)
 void RangerEntity::UpdateVariables(double dt)
 {
     NearestEnemyDist = Entity_Manager->FindDistanceBetweenEntities(Position, "Mob");
-    AttackReset_Timer += dt;    
+    if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
+        AttackReset_Timer += dt;    
 }
