@@ -13,9 +13,10 @@ public:
     void Update();
     void AddEntity();
     void RemoveEntity();
-
+    float FindNearestEntity_Dist(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find);
+    Vector3 FindNearestEntity_Pos(Vector3 Pos_of_finder, string Name_Of_Entity_To_Find);
 private:
-    vector<BaseEntity> EntityList;
+    vector<BaseEntity*> EntityList;
 };
 
 #endif
