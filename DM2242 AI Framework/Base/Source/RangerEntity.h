@@ -25,6 +25,7 @@ private:
     float AttackRange;
     float AttackReset_Timer;
     int AttackDamage;
+    float MovementSpeed;
 };
 
 #endif
