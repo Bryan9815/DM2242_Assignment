@@ -1,5 +1,5 @@
 #include "Warrior.h"
-
+#include "MobEntity.h"
 Warrior::Warrior()
 {
 
@@ -9,6 +9,20 @@ Warrior::~Warrior()
 {
 	Delete();
 }
+
+//{
+//    MobEntity* tempmob;
+//    for (interation : entitylist)
+//    {
+//        if ((*it)->GetNAme() == MobName)
+//        {
+//            tempmob = dynamic_cast<MobEntity*>((*it));
+//            break;
+//        }    
+//
+//    }
+//    tempmob->
+//}
 
 void Warrior::Init(EntityManager* EManager)
 {

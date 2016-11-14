@@ -13,6 +13,7 @@ MobEntity::~MobEntity()
 }
 void MobEntity::Init(EntityManager* EManager)
 {
+    this->EManager = EManager;
     Name = "Mob";
     HP = 300;
     Dead = false;

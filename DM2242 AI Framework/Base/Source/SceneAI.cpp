@@ -149,14 +149,14 @@ void SceneAI::Update(double dt)
     //Entity Update
     Entity_Manager->Update(dt);
 
-    Warrior* wartemp;
+    /*Warrior* wartemp;
     for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
     {
         
         if ((*it)->GetName() == "Warrior")
             wartemp = dynamic_cast<Warrior*>((*it));
     }
-    wartemp = NULL;
+    wartemp = NULL;*/
 }
 
 
@@ -217,9 +217,12 @@ void SceneAI::RenderEntity()
         modelStack.PushMatrix();
         if ((*it)->GetName() == "Ranger")
         {
-            modelStack.Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+            Vector3 temp = (*it)->GetPosition();
+            modelStack.Translate(temp.x, temp.y, temp.z);
             modelStack.Scale(1, 1, 1);
             RenderMesh(meshList[GEO_RANGER], false);
+
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
         }
         else if ((*it)->GetName() == "Warrior")
         {
@@ -246,10 +249,12 @@ void SceneAI::RenderEntity()
     
 }
 
-void SceneAI::Insert_Text_From_Here(float x, float y, float size, Color colour, string text)
+void SceneAI::Insert_Text_On_Screen(float x, float y, float size, Color colour, string text)
 {
     modelStack.PushMatrix();
-    RenderTextOnScreen()
+    Mtx44 projection;
+    projection.SetToOrtho(0, m_worldWidth, 0, m_worldHeight, -10, 10);
+    RenderTextOnScreen(meshList[GEO_TEXT], text, colour, size, x, y, projection);
     modelStack.PopMatrix();
 }
 
