@@ -39,3 +39,12 @@ void BaseEntity::SetPosition(Vector3 pos)
 {
 	Position = pos;
 }
+
+void BaseEntity::SetName(std::string Name)
+{
+    this->Name = Name;
+}
+std::string BaseEntity::GetName()
+{
+    return Name;
+}
