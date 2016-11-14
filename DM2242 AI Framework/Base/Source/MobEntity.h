@@ -16,12 +16,15 @@ public:
 	void DetermineTarget();
 private:
 	bool WarriorTrigger, HealerTrigger, RangerTrigger, WarriorKill, HealerKill, RangerKill, WarriorSkill;
+	bool Attack;
 	std::string Target;
 
 	unsigned int WarriorAggro, HealerAggro, RangerAggro;
 
 	float DistFromTarget;
 	float Speed;
+	float AttackRange;
+	float Cooldown;
 
     StateMachine MobSM;
 	EntityManager EManager;

@@ -15,8 +15,11 @@ void MobEntity::Init()
 {
     HP = 300;
     Dead = false;
-    SetPosition(Vector3(0, 0, 0));
+	Attack = true;
+	SetPosition(Vector3(0, 0, 0));
 	Speed = 5.f;
+	AttackRange = 1.5f;
+	Cooldown = 0.f;
 
 	Target = "";
 
@@ -86,7 +89,8 @@ void MobEntity::Update(double dt)
     if (MobSM.GetState() == "Chase Target")
     {
 		Vector3 temp;
-		temp = EManager.FindNearestEntity_Dist(Position, Target);
+		temp = EManager.FindNearestEntity_Pos(Position, Target);
+		Position += (Position - temp) * Speed * dt;
     }
     else if (MobSM.GetState() == "Attack")
     {
