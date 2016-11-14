@@ -29,14 +29,20 @@ void SceneAI::Init()
 	//Exercise 1: initialize m_objectCount
 	m_objectCount = 0;
 	m_ghost = new GameObject(GameObject::GO_BALL);
+
+
     Entity_Manager = new EntityManager();
     Entity_Manager->Init();
+
+
     Ranger = new RangerEntity();
     Ranger->Init(Entity_Manager);
     Entity_Manager->AddEntity(Ranger);
+
     warrior = new Warrior();
     warrior->Init(Entity_Manager);
     Entity_Manager->AddEntity(warrior);
+
     mob = new MobEntity();
     mob->Init(Entity_Manager);
     Entity_Manager->AddEntity(mob);
@@ -239,7 +245,7 @@ void SceneAI::RenderEntity()
             modelStack.Translate(temp.x, temp.y, temp.z);
             modelStack.Scale(3, 3, 3);
             RenderMesh(meshList[GEO_MOB], false);
-            Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 4.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
 
         }
         else if ((*it)->GetName() == "Healer")

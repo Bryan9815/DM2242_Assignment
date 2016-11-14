@@ -15,13 +15,12 @@ public:
     void StateRun(double dt);
     void UpdateVariables(double dt);
     void Revive();
-    
+    StateMachine RangerSM;
 private:
     bool DeadAlly;
     float NearestDeadAllyDist;
     float NearestEnemyDist;
-    int NearEnemies;
-    StateMachine RangerSM;
+    int NearEnemies;    
     EntityManager* Entity_Manager;
     float AttackRange;
     float AttackReset_Timer;

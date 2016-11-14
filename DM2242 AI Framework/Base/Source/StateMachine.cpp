@@ -59,9 +59,12 @@ std::string StateMachine::GetState()
             return (*it)->Name;
         }
     }
+    return "";
 }
 void StateMachine::SetState(std::string state_name)
 {
+    if (GetState() == state_name)
+        return;
     for (std::vector<State*>::iterator it = StateList.begin(); it != StateList.end(); ++it)
     {
         if ((*it)->Name == state_name)

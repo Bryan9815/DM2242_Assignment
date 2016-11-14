@@ -141,7 +141,7 @@ void MobEntity::Update(double dt)
     {
 		Vector3 temp;
 		temp = EManager->FindNearestEntity_Pos(Position, Target);
-		Position += (Position - temp) * Speed * dt;
+        Position += (temp - Position).Normalize() * Speed * dt;
     }
     else if (MobSM.GetState() == "Attack")
     {
