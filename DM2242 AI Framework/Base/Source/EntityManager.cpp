@@ -204,7 +204,17 @@ bool EntityManager::Mob_getDead()
     }
 }
 
-Vector3 GetNearestDeadHero(string Name_of_finder)
+BaseEntity* EntityManager::GetNearestDeadHero(string Name_of_finder)
 {
+    for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if ((((*it)->GetName() != Name_of_finder)
+            || ((*it)->GetName() != "Mob"))
+            && ((*it)->GetDead())
+            )
+        {
+            return (*it);
+        }
+    }
 
 }

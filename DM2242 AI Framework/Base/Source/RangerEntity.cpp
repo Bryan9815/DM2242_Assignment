@@ -1,8 +1,9 @@
 #include "RangerEntity.h"
+#include "Warrior.h"
 #define MAXHP 100
 #define STARTPOS Vector3(10,45,0)
 #define TIME_BETWEEN_ATTACKS 1.0f
-
+#define REVIVE_RANGE 0.7f
 RangerEntity::RangerEntity()
 {
     Name = "Ranger";
@@ -168,7 +169,25 @@ void RangerEntity::StateRun(double dt)
     }
     else if (RangerSM.GetState() == "Revive")
     {
+        BaseEntity* tempEntity = Entity_Manager->GetNearestDeadHero(Name);
         
+        if ((Position - tempEntity->GetPosition()).Length() > REVIVE_RANGE)
+        {
+            Position += (tempEntity->GetPosition() - Position).Normalize() * MovementSpeed * dt;
+            return;
+        }
+
+        if (tempEntity->GetName() == "Warrior")
+        {
+            Warrior* tempWarrior = dynamic_cast<Warrior*>(tempEntity);
+            tempWarrior->SetHP(100);
+            RangerSM.SetState("Move");
+        }
+        else if (tempEntity->GetName() == "Healer")
+        {
+
+        }
+   
     }
     else
     {
@@ -183,8 +202,8 @@ void RangerEntity::UpdateVariables(double dt)
     if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
         AttackReset_Timer += dt;
     BaseEntity* temp;
-    if (Entity_Manager->Hero_getDead(Name))
-        DeadAlly = true;
+    DeadAlly = Entity_Manager->Hero_getDead(Name);
+    
 }
 
 void RangerEntity::WrapAroundScreen()
