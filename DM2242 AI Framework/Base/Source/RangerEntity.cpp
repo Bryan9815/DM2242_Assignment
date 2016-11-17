@@ -15,6 +15,7 @@ RangerEntity::~RangerEntity()
 }
 void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height)
 {
+    scale = 1.f;
     Aggro = 0;
     this->world_height = world_height;
     this->world_width = world_width;
@@ -69,6 +70,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
 }
 void RangerEntity::Update(double dt)
 {
+    WrapAroundScreen();
     UpdateVariables(dt);
     StateCheck();
     StateRun(dt);
@@ -180,5 +182,21 @@ void RangerEntity::UpdateVariables(double dt)
     NearestEnemyDist = Entity_Manager->FindDistanceBetweenEntities(Position, "Mob");
     if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
         AttackReset_Timer += dt;
-    
+    BaseEntity* temp;
+    if (Entity_Manager->)
+}
+
+void RangerEntity::WrapAroundScreen()
+{
+#define OFFSET (scale * 0.5f)
+
+    if (Position.x > world_width + OFFSET)
+        Position.x = -OFFSET;
+    else if (Position.x < 0 - OFFSET)
+        Position.x = world_width + OFFSET;
+
+    if (Position.y > world_height + OFFSET)
+        Position.y = -OFFSET;
+    else if (Position.y < -OFFSET)
+        Position.y = world_width + OFFSET;
 }

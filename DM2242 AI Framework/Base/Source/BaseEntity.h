@@ -29,6 +29,7 @@ protected:
     std::string Name;
     float world_width;
     float world_height;
+    float scale;
 };
 
 #endif

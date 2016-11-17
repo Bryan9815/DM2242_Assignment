@@ -179,3 +179,27 @@ unsigned int EntityManager::FindEntityAggro(string Name_Of_Entity_To_Find)
 		}
 	}
 }
+
+bool EntityManager::Hero_getDead(string Name_of_finder)
+{
+    bool temp = false;
+    for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if ((*it)->GetName() != Name_of_finder || (*it)->GetName() != "Mob")
+        {
+            if ((*it)->GetDead())
+                temp = true;
+        }
+    }
+    return temp;
+}
+bool EntityManager::Mob_getDead()
+{
+    for (vector<BaseEntity*>::iterator it = EntityList.begin(); it != EntityList.end(); ++it)
+    {
+        if ((*it)->GetName() == "Mob")
+        {
+            return (*it)->GetDead();
+        }
+    }
+}

@@ -38,13 +38,13 @@ void SceneAI::Init()
     Ranger = new RangerEntity();    
     Entity_Manager->AddEntity(Ranger);
 
-    warrior = new Warrior();    
+    warrior = new Warrior();
     Entity_Manager->AddEntity(warrior);
 
     mob = new MobEntity();    
     Entity_Manager->AddEntity(mob);
 
-    Ranger->Init(Entity_Manager);
+    Ranger->Init(Entity_Manager, m_worldWidth,m_worldHeight);
     warrior->Init(Entity_Manager);
     mob->Init(Entity_Manager);
 }

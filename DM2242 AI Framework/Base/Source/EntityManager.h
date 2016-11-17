@@ -20,6 +20,9 @@ public:
     void DecreaseEntityHP(string Name_Of_Entity_To_Find, int amount_to_decrease);
 	void IncreaseEntityAggro(string Name_Of_Entity_To_Find, unsigned int amount_to_increase);
 	unsigned int FindEntityAggro(string Name_Of_Entity_To_Find);
+
+    bool Hero_getDead(string Name_of_finder);
+    bool Mob_getDead();
     vector<BaseEntity*> EntityList;
 private:
     

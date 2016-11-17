@@ -15,6 +15,8 @@ public:
     void StateRun(double dt);
     void UpdateVariables(double dt);
     void Revive();
+
+    void WrapAroundScreen();
     StateMachine RangerSM;
 private:
     bool DeadAlly;
