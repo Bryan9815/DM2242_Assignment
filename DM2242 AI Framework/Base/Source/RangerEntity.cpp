@@ -211,5 +211,5 @@ void RangerEntity::WrapAroundScreen()
     if (Position.y > world_height + OFFSET)
         Position.y = -OFFSET;
     else if (Position.y < -OFFSET)
-        Position.y = world_width + OFFSET;
+        Position.y = world_height + OFFSET;
 }
