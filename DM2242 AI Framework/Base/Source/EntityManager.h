@@ -23,6 +23,8 @@ public:
 
     bool Hero_getDead(string Name_of_finder);
     bool Mob_getDead();
+
+    BaseEntity* GetNearestDeadHero(string Name_of_finder);
     vector<BaseEntity*> EntityList;
 private:
     

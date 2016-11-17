@@ -183,7 +183,8 @@ void RangerEntity::UpdateVariables(double dt)
     if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
         AttackReset_Timer += dt;
     BaseEntity* temp;
-    if (Entity_Manager->)
+    if (Entity_Manager->Hero_getDead(Name))
+        DeadAlly = true;
 }
 
 void RangerEntity::WrapAroundScreen()

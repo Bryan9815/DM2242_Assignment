@@ -203,3 +203,8 @@ bool EntityManager::Mob_getDead()
         }
     }
 }
+
+Vector3 GetNearestDeadHero(string Name_of_finder)
+{
+
+}
