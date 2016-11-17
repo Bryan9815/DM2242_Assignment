@@ -18,7 +18,6 @@ void MobEntity::Init(EntityManager* EManager)
     this->EManager = EManager;
     HP = 300;
     Dead = false;
-	Attack = true;
 	Stunned = false;
 	SetPosition(Vector3(50, 50, 0));
 	Speed = 5.f;
@@ -52,7 +51,6 @@ void MobEntity::Init(EntityManager* EManager, Vector3 startpos)
 	this->EManager = EManager;
 	HP = 300;
 	Dead = false;
-	Attack = true;
 	Stunned = false;
 	SetPosition(Vector3(50, 50, 0));
 	Speed = 5.f;
@@ -119,17 +117,6 @@ void MobEntity::Update(double dt)
 	if (HP <= 0)
 		MobSM.SetState("Dead");
 
-	// Attack Cooldown
-	if (!Attack)
-	{
-		Cooldown += dt;
-	}
-	if (Cooldown >= 2.f)
-	{
-		Attack = true;
-		Cooldown = 0;
-	}
-
 	// Stun Timer
 	if (Stunned)
 		StunTimer += dt;
@@ -149,22 +136,23 @@ void MobEntity::Update(double dt)
     }
     else if (MobSM.GetState() == "Attack")
     {
-		if (Attack)
+		Cooldown += dt;
+		if (Cooldown >= 2.f)
 		{
 			EManager->DecreaseEntityHP(Target, Math::RandIntMinMax(20, 30));
-			Attack = false;
+			Cooldown = 0;
 		}
         
     }
 	else if (MobSM.GetState() == "Knocked Back")
-	{		
+	{
 		Vector3 dirVec;
 		dirVec = (Position - warrior->GetPosition()).Normalize();
 		knockTimer += dt;
 		if (knockTimer < 0.25f)
 			Position += dirVec * Speed * 4 * dt;
 		else
-		{            
+		{
 			float stunChance = 0;
 			stunChance = Math::RandFloatMinMax(1, 100);
 			if (stunChance >= 34)

@@ -22,7 +22,6 @@ void Warrior::Init(EntityManager* EManager)
 	Speed = 6.f;
 	Aggro = 0;
 	AttackRange = 2.f;
-	Attack = true;
 	Cooldown = 0.f;
 	Dead = false;
 	DeadAlly = false;
@@ -51,7 +50,6 @@ void Warrior::Init(EntityManager* EManager, Vector3 startpos)
 	Speed = 6.f;
 	Aggro = 0;
 	AttackRange = 2.f;
-	Attack = true;
 	Cooldown = 0.f;
 	Dead = false;
 	DeadAlly = false;
