@@ -22,7 +22,6 @@ public:
 private:
 	bool DeadAlly;
 	bool EnemyNearAlly;
-	bool Attack;
 	
 	float Speed;
 	float AttackRange;

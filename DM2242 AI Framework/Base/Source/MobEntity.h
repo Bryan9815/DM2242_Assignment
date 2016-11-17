@@ -19,7 +19,6 @@ public:
 	bool Stunned;
 	StateMachine MobSM;
 private:
-	bool Attack;	
 	std::string Target;
 
 	float DistFromTarget;
