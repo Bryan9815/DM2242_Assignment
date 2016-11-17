@@ -15,16 +15,17 @@ MobEntity::~MobEntity()
 }
 void MobEntity::Init(EntityManager* EManager)
 {
-    this->EManager = EManager;    
+    this->EManager = EManager;
     HP = 300;
     Dead = false;
 	Attack = true;
+	Stunned = false;
 	SetPosition(Vector3(50, 50, 0));
 	Speed = 5.f;
 	AttackRange = 1.5f;
 	Cooldown = 0.f;
     knockTimer = 0;
-
+	StunTimer = 0;
 	Target = "";
 
 	//States
@@ -48,25 +49,27 @@ void MobEntity::Init(EntityManager* EManager)
 
 void MobEntity::Init(EntityManager* EManager, Vector3 startpos)
 {
-    Name = "Mob";
-    HP = 300;
-    Dead = false;
-    Attack = true;
-    SetPosition(startpos);
-    Speed = 5.f;
-    AttackRange = 1.5f;
-    Cooldown = 0.f;
+	this->EManager = EManager;
+	HP = 300;
+	Dead = false;
+	Attack = true;
+	Stunned = false;
+	SetPosition(Vector3(50, 50, 0));
+	Speed = 5.f;
+	AttackRange = 1.5f;
+	Cooldown = 0.f;
+	knockTimer = 0;
+	StunTimer = 0;
+	Target = "";
 
-    Target = "";
-
-    //States
-    MobSM.AddState("Chase Target");
-    MobSM.AddState("Attack");
+	//States
+	MobSM.AddState("Chase Target");
+	MobSM.AddState("Attack");
 	MobSM.AddState("Knocked Back");
 	MobSM.AddState("Stunned");
-    MobSM.AddState("Dead");
+	MobSM.AddState("Dead");
 
-    MobSM.SetState("Chase Target");
+	MobSM.SetState("Chase Target");
 
 	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
 	{
@@ -105,7 +108,7 @@ void MobEntity::Update(double dt)
 	DetermineTarget();
     DistFromTarget = EManager->FindDistanceBetweenEntities(Position, Target);
 	// Chase Target
-	if (DistFromTarget > 1.5f)
+	if (DistFromTarget > 1.5f && MobSM.GetState() != "Knocked Back" && MobSM.GetState() != "Stunned")
 		MobSM.SetState("Chase Target");
 
 	// Attack
@@ -158,13 +161,13 @@ void MobEntity::Update(double dt)
 		Vector3 dirVec;
 		dirVec = (Position - warrior->GetPosition()).Normalize();
 		knockTimer += dt;
-		if (knockTimer < 2.5f)
-			Position += (Position + dirVec) * 7.5f * dt;
+		if (knockTimer < 0.25f)
+			Position += dirVec * Speed * 4 * dt;
 		else
 		{            
 			float stunChance = 0;
 			stunChance = Math::RandFloatMinMax(1, 100);
-			if (stunChance >= 46)
+			if (stunChance >= 34)
 			{
 				MobSM.SetState("Stunned");                
 			}

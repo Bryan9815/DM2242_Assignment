@@ -20,6 +20,7 @@ void Warrior::Init(EntityManager* EManager)
 	HP = 100;
 	SetPosition(Vector3(10, 40, 0));
 	Speed = 6.f;
+	Aggro = 0;
 	AttackRange = 2.f;
 	Attack = true;
 	Cooldown = 0.f;
@@ -43,21 +44,22 @@ void Warrior::Init(EntityManager* EManager)
 
 void Warrior::Init(EntityManager* EManager, Vector3 startpos)
 {
-    this->EManager = EManager;
-    Name = "Warrior";
-    HP = 100;
-    SetPosition(startpos);
-    Speed = 6.f;
-    AttackRange = 2.f;
-    Attack = true;
-    Cooldown = 0.f;
-    Dead = false;
-    DeadAlly = false;
-    WarriorSM.AddState("Chase Enemy");
-    WarriorSM.AddState("Attack");
-    WarriorSM.AddState("Knocking Back");
-    WarriorSM.AddState("Revive");
-    WarriorSM.AddState("Dead");
+	this->EManager = EManager;
+
+	HP = 100;
+	SetPosition(Vector3(10, 40, 0));
+	Speed = 6.f;
+	Aggro = 0;
+	AttackRange = 2.f;
+	Attack = true;
+	Cooldown = 0.f;
+	Dead = false;
+	DeadAlly = false;
+	WarriorSM.AddState("Chase Enemy");
+	WarriorSM.AddState("Attack");
+	WarriorSM.AddState("Knocking Back");
+	WarriorSM.AddState("Revive");
+	WarriorSM.AddState("Dead");
 
 	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
 	{
@@ -100,15 +102,6 @@ void Warrior::Update(double dt)
 		WarriorSM.SetState("Dead");
 
 	// Attack Cooldown
-	if (!Attack)
-	{
-		Cooldown += dt;
-	}
-	if (Cooldown >= 1.f)
-	{
-		Attack = true;
-		Cooldown = 0;
-	}
 
 	// States
 	if (WarriorSM.GetState() == "Chase Enemy")
@@ -120,13 +113,14 @@ void Warrior::Update(double dt)
 	}
 	else if (WarriorSM.GetState() == "Attack")
 	{
-		if (Attack)
+		Cooldown += dt;
+		if (Cooldown >= 1.f)
 		{
 			int temp = 0;
 			temp = Math::RandIntMinMax(5, 15);
 			EManager->DecreaseEntityHP("Mob", temp);
 			EManager->IncreaseEntityAggro("Warrior", temp);
-			Attack = false;
+			Cooldown = 0;
 		}
 
         /*if (EManager->FindDistanceBetweenEntities("Warrior", "Mob") < AttackRange - 0.2f)
