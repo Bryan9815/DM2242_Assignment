@@ -13,16 +13,14 @@ Warrior::~Warrior()
 	Delete();
 }
 
-void Warrior::Init(EntityManager* EManager)
+void Warrior::Init(EntityManager* EManager, float world_width, float world_height)
 {
     this->EManager = EManager;
-    
-	HP = 100;
-	SetPosition(Vector3(10, 40, 0));
+
+	SetPosition(Vector3(20, 50, 0));
 	Speed = 6.f;
-	Aggro = 0;
 	AttackRange = 2.f;
-	Cooldown = 0.f;
+	Cooldown = 2.f;
 	Dead = false;
 	DeadAlly = false;
 	WarriorSM.AddState("Chase Enemy");
@@ -41,16 +39,14 @@ void Warrior::Init(EntityManager* EManager)
 	}
 }
 
-void Warrior::Init(EntityManager* EManager, Vector3 startpos)
+void Warrior::Init(EntityManager* EManager, float world_width, float world_height, Vector3 startpos)
 {
 	this->EManager = EManager;
 
-	HP = 100;
-	SetPosition(Vector3(10, 40, 0));
+	SetPosition(Vector3(20, 50, 0));
 	Speed = 6.f;
-	Aggro = 0;
 	AttackRange = 2.f;
-	Cooldown = 0.f;
+	Cooldown = 2.f;
 	Dead = false;
 	DeadAlly = false;
 	WarriorSM.AddState("Chase Enemy");
@@ -71,6 +67,7 @@ void Warrior::Init(EntityManager* EManager, Vector3 startpos)
 
 void Warrior::Update(double dt)
 {
+	//WrapAroundScreen();
 	WarriorMobDist = EManager->FindDistanceBetweenEntities(Position, "Mob");
 	RangerMobDist = EManager->FindDistanceBetweenEntities("Ranger", "Mob");
 	HealerMobDist = EManager->FindDistanceBetweenEntities("Healer", "Mob");
@@ -146,12 +143,42 @@ void Warrior::Update(double dt)
 	}
 	else if (WarriorSM.GetState() == "Revive")
 	{
-		// Move to dead ally and revive them
+		BaseEntity* tempEntity = EManager->GetNearestDeadHero(Name);
+
+		if ((Position - tempEntity->GetPosition()).Length() > ReviveRange)
+		{
+			Position += (tempEntity->GetPosition() - Position).Normalize() * Speed * dt;
+			return;
+		}
+		if (tempEntity->GetName() == "Warrior")
+		{
+			Warrior* tempWarrior = dynamic_cast<Warrior*>(tempEntity);
+			tempWarrior->SetHP(100);
+		}
+		else if (tempEntity->GetName() == "Healer")
+		{
+
+		}
 	}
 	else if (WarriorSM.GetState() == "Dead")
 	{
 		// Immobilized until teammate revives him
 	}
+}
+
+void Warrior::WrapAroundScreen()
+{
+#define OFFSET (scale * 0.5f)
+
+	if (Position.x > world_width + OFFSET)
+		Position.x = -OFFSET;
+	else if (Position.x < 0 - OFFSET)
+		Position.x = world_width + OFFSET;
+
+	if (Position.y > world_height + OFFSET)
+		Position.y = -OFFSET;
+	else if (Position.y < -OFFSET)
+		Position.y = world_width + OFFSET;
 }
 
 void Warrior::Delete()

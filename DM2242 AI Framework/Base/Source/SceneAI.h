@@ -50,6 +50,7 @@ protected:
 	float m1, m2;
 	Vector3 u1, u2, v1, v2;
 
+	BaseEntity* Base_Entity;
     EntityManager* Entity_Manager;
     RangerEntity* Ranger;
     Warrior* warrior;

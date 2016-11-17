@@ -16,8 +16,6 @@ RangerEntity::~RangerEntity()
 }
 void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height)
 {
-    scale = 1.f;
-    Aggro = 0;
     this->world_height = world_height;
     this->world_width = world_width;
     SetPosition(STARTPOS);
@@ -25,8 +23,6 @@ void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     AttackRange = 5.0f;
     AttackDamage = 5.0f;
     MovementSpeed = 5.0f;
-    HP = MAXHP;
-    Dead = false;
     DeadAlly = false;
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;
@@ -37,7 +33,6 @@ void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     RangerSM.AddState("Death"); 
     RangerSM.AddState("Bomb");
     RangerSM.AddState("Revive");
-    
 
     RangerSM.SetState("Move");
 
@@ -52,8 +47,6 @@ void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     AttackRange = 5.0f;
     AttackDamage = 5.0f;
     MovementSpeed = 5.f;
-    HP = MAXHP;
-    Dead = false;
     DeadAlly = false;
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;

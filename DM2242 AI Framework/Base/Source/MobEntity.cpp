@@ -13,14 +13,16 @@ MobEntity::~MobEntity()
 {
     Delete();
 }
-void MobEntity::Init(EntityManager* EManager)
+void MobEntity::Init(EntityManager* EManager, float world_width, float world_height)
 {
     this->EManager = EManager;
     HP = 300;
-    Dead = false;
 	Stunned = false;
 	SetPosition(Vector3(50, 50, 0));
+	this->world_height = world_height;
+	this->world_width = world_width;
 	Speed = 5.f;
+	scale = 2.f;
 	AttackRange = 1.5f;
 	Cooldown = 0.f;
     knockTimer = 0;
@@ -46,14 +48,16 @@ void MobEntity::Init(EntityManager* EManager)
 	}
 }
 
-void MobEntity::Init(EntityManager* EManager, Vector3 startpos)
+void MobEntity::Init(EntityManager* EManager, float world_width, float world_height, Vector3 startpos)
 {
 	this->EManager = EManager;
 	HP = 300;
-	Dead = false;
 	Stunned = false;
 	SetPosition(Vector3(50, 50, 0));
+	this->world_height = world_height;
+	this->world_width = world_width;
 	Speed = 5.f;
+	scale = 2.f;
 	AttackRange = 1.5f;
 	Cooldown = 0.f;
 	knockTimer = 0;
@@ -103,6 +107,7 @@ void MobEntity::DetermineTarget()
 
 void MobEntity::Update(double dt)
 {
+	WrapAroundScreen();
 	DetermineTarget();
     DistFromTarget = EManager->FindDistanceBetweenEntities(Position, Target);
 	// Chase Target
@@ -176,8 +181,22 @@ void MobEntity::Update(double dt)
     }
 }
 
+void MobEntity::WrapAroundScreen()
+{
+#define OFFSET (scale * 0.5f)
+
+	if (Position.x > world_width + OFFSET)
+		Position.x = -OFFSET;
+	else if (Position.x < 0 - OFFSET)
+		Position.x = world_width + OFFSET;
+
+	if (Position.y > world_height + OFFSET)
+		Position.y = -OFFSET;
+	else if (Position.y < -OFFSET)
+		Position.y = world_width + OFFSET;
+}
+
 void MobEntity::Delete()
 {
 
 }
-

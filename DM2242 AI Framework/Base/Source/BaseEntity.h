@@ -8,8 +8,8 @@ class BaseEntity
 public:
     BaseEntity();
     virtual ~BaseEntity();
-    virtual void Init(){};
-    virtual void Update(double dt){};
+	virtual void Init(){};
+	virtual void Update(double dt){};
     virtual int GetHP();
     virtual void SetHP(int hp);
 	virtual unsigned int GetAggro();
@@ -22,14 +22,15 @@ public:
     virtual void SetName(std::string Name);
     virtual std::string GetName();
 protected:
-    int HP;
-	unsigned int Aggro;
-    bool Dead;
+    int HP = 100;
+	unsigned int Aggro = 0;
+    bool Dead = false;
     Vector3 Position;
     std::string Name;
     float world_width;
     float world_height;
-    float scale;
+    float scale = 1.f;
+	float ReviveRange = 0.7f;
 };
 
 #endif

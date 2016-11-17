@@ -9,10 +9,12 @@ public:
 	Warrior();
 	~Warrior();
 
-    void Init(EntityManager* EManager);
-    void Init(EntityManager* EManager, Vector3 startpos);
+	void Init(EntityManager* EManager, float world_width, float world_height);
+	void Init(EntityManager* EManager, float world_width, float world_height, Vector3 startpos);
 	void Update(double dt);
 	void Delete();
+
+	void WrapAroundScreen();
 
 	float WarriorMobDist;
 	float RangerMobDist;
@@ -26,6 +28,7 @@ private:
 	float Speed;
 	float AttackRange;
 	float Cooldown;
+	float ReviveRange;
 
 	EntityManager* EManager;
 };

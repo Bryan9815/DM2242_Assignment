@@ -30,7 +30,6 @@ void SceneAI::Init()
 	m_objectCount = 0;
 	m_ghost = new GameObject(GameObject::GO_BALL);
 
-
     Entity_Manager = new EntityManager();
     Entity_Manager->Init();
 
@@ -45,8 +44,8 @@ void SceneAI::Init()
     Entity_Manager->AddEntity(mob);
 
     Ranger->Init(Entity_Manager, m_worldWidth,m_worldHeight);
-    warrior->Init(Entity_Manager);
-    mob->Init(Entity_Manager);
+	warrior->Init(Entity_Manager, m_worldWidth, m_worldHeight);
+	mob->Init(Entity_Manager, m_worldWidth, m_worldHeight);
 }
 
 GameObject* SceneAI::FetchGO()

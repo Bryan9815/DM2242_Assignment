@@ -9,12 +9,13 @@ public:
     MobEntity();
     ~MobEntity();
 
-    void Init(EntityManager* EManager);
-    void Init(EntityManager* EManager, Vector3 startpos);
+	void Init(EntityManager* EManager, float world_width, float world_height);
+	void Init(EntityManager* EManager, float world_width, float world_height, Vector3 startpos);
     void Update(double dt);
     void Delete();
 
 	void DetermineTarget();
+	void WrapAroundScreen();
 
 	bool Stunned;
 	StateMachine MobSM;
