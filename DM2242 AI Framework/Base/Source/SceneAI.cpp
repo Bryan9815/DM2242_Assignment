@@ -158,7 +158,7 @@ void SceneAI::Update(double dt)
 
     if (Application::IsKeyPressed('X'))
     {
-        //warrior->WarriorSM.SetState("Knocking Back");
+        warrior->WarriorSM.SetState("Knocking Back");
     }
 }
 

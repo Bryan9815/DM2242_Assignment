@@ -13,8 +13,11 @@ RangerEntity::~RangerEntity()
 {
     Delete();
 }
-void RangerEntity::Init(EntityManager* Entity_Manager)
-{    
+void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height)
+{
+    Aggro = 0;
+    this->world_height = world_height;
+    this->world_width = world_width;
     SetPosition(STARTPOS);
     this->Entity_Manager = Entity_Manager;
     AttackRange = 5.0f;
@@ -39,7 +42,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager)
     AttackReset_Timer = 0;
 }
 
-void RangerEntity::Init(EntityManager* Entity_Manager, Vector3 startpos)
+void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height, Vector3 startpos)
 {
     Name = "Ranger";
     SetPosition(startpos);
@@ -150,6 +153,7 @@ void RangerEntity::StateRun(double dt)
         {
             AttackReset_Timer = 0;
             Entity_Manager->DecreaseEntityHP("Mob", AttackDamage);
+            Aggro += AttackDamage;
         }
     }
     /*else if (RangerSM.GetState() == "Bomb")

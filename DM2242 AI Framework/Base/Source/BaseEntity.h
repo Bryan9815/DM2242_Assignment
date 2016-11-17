@@ -27,6 +27,8 @@ protected:
     bool Dead;
     Vector3 Position;
     std::string Name;
+    float world_width;
+    float world_height;
 };
 
 #endif
