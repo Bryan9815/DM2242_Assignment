@@ -35,17 +35,18 @@ void SceneAI::Init()
     Entity_Manager->Init();
 
 
-    Ranger = new RangerEntity();
-    Ranger->Init(Entity_Manager);
+    Ranger = new RangerEntity();    
     Entity_Manager->AddEntity(Ranger);
 
-    warrior = new Warrior();
-    warrior->Init(Entity_Manager);
+    warrior = new Warrior();    
     Entity_Manager->AddEntity(warrior);
 
-    mob = new MobEntity();
-    mob->Init(Entity_Manager);
+    mob = new MobEntity();    
     Entity_Manager->AddEntity(mob);
+
+    Ranger->Init(Entity_Manager);
+    warrior->Init(Entity_Manager);
+    mob->Init(Entity_Manager);
 }
 
 GameObject* SceneAI::FetchGO()
@@ -155,14 +156,10 @@ void SceneAI::Update(double dt)
     //Entity Update
     Entity_Manager->Update(dt);
 
-    /*Warrior* wartemp;
-    for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
+    if (Application::IsKeyPressed('X'))
     {
-        
-        if ((*it)->GetName() == "Warrior")
-            wartemp = dynamic_cast<Warrior*>((*it));
+        //warrior->WarriorSM.SetState("Knocking Back");
     }
-    wartemp = NULL;*/
 }
 
 

@@ -3,9 +3,9 @@
 
 MobEntity *Mob;
 
-Warrior::Warrior()
+Warrior::Warrior() 
 {
-
+    Name = "Warrior";    
 }
 
 Warrior::~Warrior()
@@ -16,7 +16,7 @@ Warrior::~Warrior()
 void Warrior::Init(EntityManager* EManager)
 {
     this->EManager = EManager;
-    Name = "Warrior";
+    
 	HP = 100;
 	SetPosition(Vector3(10, 40, 0));
 	Speed = 6.f;
@@ -76,7 +76,7 @@ void Warrior::Update(double dt)
 	HealerMobDist = EManager->FindDistanceBetweenEntities("Healer", "Mob");
 
 	// Chase Enemy
-	if (WarriorMobDist > AttackRange && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
+    if (WarriorMobDist > AttackRange && WarriorSM.GetState() != "Knocking Back"  && WarriorSM.GetState() != "Revive" && WarriorSM.GetState() != "Dead")
 		WarriorSM.SetState("Chase Enemy");
 
 	// Attack
@@ -142,8 +142,8 @@ void Warrior::Update(double dt)
 		{
 			Vector3 temp;
 			temp = EManager->FindNearestEntity_Pos(Position, "Mob");
-			Position += (Position - temp) * Speed * dt;
-		}
+            Position += -(Position - temp).Normalize() * Speed * dt;
+        }
 		else if (WarriorMobDist <= AttackRange)
 		{
 			EManager->DecreaseEntityHP("Mob", 5);

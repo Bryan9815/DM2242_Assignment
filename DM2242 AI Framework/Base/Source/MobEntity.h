@@ -27,7 +27,7 @@ private:
 	float AttackRange;
 	float Cooldown;
 	float StunTimer;
-
+    float knockTimer;
     
 	EntityManager* EManager;
 };

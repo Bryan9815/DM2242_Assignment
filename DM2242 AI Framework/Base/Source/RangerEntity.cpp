@@ -5,6 +5,7 @@
 
 RangerEntity::RangerEntity()
 {
+    Name = "Ranger";
 }
 
 
@@ -13,8 +14,7 @@ RangerEntity::~RangerEntity()
     Delete();
 }
 void RangerEntity::Init(EntityManager* Entity_Manager)
-{
-    Name = "Ranger";
+{    
     SetPosition(STARTPOS);
     this->Entity_Manager = Entity_Manager;
     AttackRange = 5.0f;

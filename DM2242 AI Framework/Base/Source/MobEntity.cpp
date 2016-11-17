@@ -5,7 +5,7 @@ Warrior *warrior;
 
 MobEntity::MobEntity()
 {
-
+    Name = "Mob";
 }
 
 
@@ -15,8 +15,7 @@ MobEntity::~MobEntity()
 }
 void MobEntity::Init(EntityManager* EManager)
 {
-    this->EManager = EManager;
-    Name = "Mob";
+    this->EManager = EManager;    
     HP = 300;
     Dead = false;
 	Attack = true;
@@ -24,7 +23,7 @@ void MobEntity::Init(EntityManager* EManager)
 	Speed = 5.f;
 	AttackRange = 1.5f;
 	Cooldown = 0.f;
-
+    knockTimer = 0;
 
 	Target = "";
 
@@ -110,7 +109,7 @@ void MobEntity::Update(double dt)
 		MobSM.SetState("Chase Target");
 
 	// Attack
-	if (DistFromTarget <= 1.5f)
+	if (DistFromTarget <= 1.5f && MobSM.GetState() != "Knocked Back" && MobSM.GetState() != "Stunned")
 		MobSM.SetState("Attack");
 
 	// Dead
@@ -155,23 +154,25 @@ void MobEntity::Update(double dt)
         
     }
 	else if (MobSM.GetState() == "Knocked Back")
-	{
-		float knockTimer = 0;
+	{		
 		Vector3 dirVec;
 		dirVec = (Position - warrior->GetPosition()).Normalize();
 		knockTimer += dt;
-		if (knockTimer < 0.5f)
+		if (knockTimer < 2.5f)
 			Position += (Position + dirVec) * 7.5f * dt;
 		else
-		{
+		{            
 			float stunChance = 0;
 			stunChance = Math::RandFloatMinMax(1, 100);
 			if (stunChance >= 46)
 			{
-				MobSM.SetState("Stunned");
+				MobSM.SetState("Stunned");                
 			}
-			else
-				MobSM.SetState("Chase Target");
+            else
+            {
+                MobSM.SetState("Chase Target");                
+            }				
+            knockTimer = 0;
 		}
 	}
 	else if (MobSM.GetState() == "Stunned")

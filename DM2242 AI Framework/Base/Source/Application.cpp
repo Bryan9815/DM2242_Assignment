@@ -91,7 +91,7 @@ void Application::Init()
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 	//Borderless
-	glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+	//glfwWindowHint(GLFW_DECORATED, GL_FALSE);
 
 	// SIDE NOTE: DO NOT BUG TEST IN FULL SCREEN. IF IT LAGS OUT, YOU CANNOT CLOSE THE WINDOW!
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
