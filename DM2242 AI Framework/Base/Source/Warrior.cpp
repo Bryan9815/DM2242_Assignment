@@ -19,6 +19,7 @@ void Warrior::Init(EntityManager* EManager, float world_width, float world_heigh
 
 	SetPosition(Vector3(20, 50, 0));
 	Speed = 6.f;
+	Aggro = 100000;
 	AttackRange = 2.f;
 	Cooldown = 2.f;
 	Dead = false;
@@ -45,6 +46,7 @@ void Warrior::Init(EntityManager* EManager, float world_width, float world_heigh
 
 	SetPosition(Vector3(20, 50, 0));
 	Speed = 6.f;
+	Aggro = 100000;
 	AttackRange = 2.f;
 	Cooldown = 2.f;
 	Dead = false;
@@ -109,10 +111,10 @@ void Warrior::Update(double dt)
 	else if (WarriorSM.GetState() == "Attack")
 	{
 		Cooldown += dt;
-		if (Cooldown >= 1.f)
+		if (Cooldown >= 0.7f)
 		{
 			int temp = 0;
-			temp = Math::RandIntMinMax(5, 15);
+			temp = Math::RandIntMinMax(6, 15);
 			EManager->DecreaseEntityHP("Mob", temp);
 			EManager->IncreaseEntityAggro("Warrior", temp);
 			Cooldown = 0;
@@ -136,7 +138,7 @@ void Warrior::Update(double dt)
 		else if (WarriorMobDist <= AttackRange)
 		{
 			EManager->DecreaseEntityHP("Mob", 5);
-			EManager->IncreaseEntityAggro("Warrior", 30);
+			EManager->IncreaseEntityAggro("Warrior", 50);
 			Mob->MobSM.SetState("Knocked Back");
 			WarriorSM.SetState("Chase Enemy");
 		}

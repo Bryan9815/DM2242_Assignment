@@ -1,7 +1,9 @@
 #include "MobEntity.h"
 #include "Warrior.h"
+#include "RangerEntity.h"
 
 Warrior *warrior;
+RangerEntity *ranger;
 
 MobEntity::MobEntity()
 {
@@ -46,6 +48,14 @@ void MobEntity::Init(EntityManager* EManager, float world_width, float world_hei
 			break;
 		}
 	}
+	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
+	{
+		if ((*it)->GetName() == "Ranger")//entity to find
+		{
+			ranger = dynamic_cast<RangerEntity*>((*it));
+			break;
+		}
+	}
 }
 
 void MobEntity::Init(EntityManager* EManager, float world_width, float world_height, Vector3 startpos)
@@ -81,28 +91,20 @@ void MobEntity::Init(EntityManager* EManager, float world_width, float world_hei
 			break;
 		}
 	}
+	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
+	{
+		if ((*it)->GetName() == "Ranger")//entity to find
+		{
+			ranger = dynamic_cast<RangerEntity*>((*it));
+			break;
+		}
+	}
 }
 
 void MobEntity::DetermineTarget()
 {
 	// if aggro equal, go after closest target, else go after highest aggro
-	if (EManager->FindEntityAggro("Warrior") == EManager->FindEntityAggro("Ranger") && EManager->FindEntityAggro("Healer"))
-	{
-		if (warrior->WarriorMobDist > warrior->HealerMobDist && warrior->WarriorMobDist > warrior->RangerMobDist)
-			Target = "Warrior";
-		if (warrior->RangerMobDist > warrior->HealerMobDist && warrior->RangerMobDist > warrior->WarriorMobDist)
-			Target = "Ranger";
-		if (warrior->HealerMobDist > warrior->WarriorMobDist && warrior->HealerMobDist > warrior->RangerMobDist)
-			Target = "Healer";
-	}
-	else if (EManager->FindEntityAggro("Warrior") >= EManager->FindEntityAggro("Ranger") && EManager->FindEntityAggro("Warrior") >= EManager->FindEntityAggro("Healer"))
-		Target = "Warrior";
-	else if (EManager->FindEntityAggro("Ranger") >= EManager->FindEntityAggro("Warrior") && EManager->FindEntityAggro("Ranger") >= EManager->FindEntityAggro("Healer"))
-		Target = "Ranger";
-	else if (EManager->FindEntityAggro("Healer") >= EManager->FindEntityAggro("Warrior") && EManager->FindEntityAggro("Healer") >= EManager->FindEntityAggro("Ranger"))
-		Target = "Ranger";
-	else
-		Target = "Warrior";
+
 }
 
 void MobEntity::Update(double dt)
@@ -146,8 +148,7 @@ void MobEntity::Update(double dt)
 		{
 			EManager->DecreaseEntityHP(Target, Math::RandIntMinMax(20, 30));
 			Cooldown = 0;
-		}
-        
+		}        
     }
 	else if (MobSM.GetState() == "Knocked Back")
 	{
