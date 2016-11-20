@@ -19,7 +19,6 @@ void Warrior::Init(EntityManager* EManager, float world_width, float world_heigh
 
 	SetPosition(Vector3(20, 50, 0));
 	Speed = 6.f;
-	Aggro = 100000;
 	AttackRange = 2.f;
 	Cooldown = 2.f;
 	Dead = false;
@@ -46,7 +45,6 @@ void Warrior::Init(EntityManager* EManager, float world_width, float world_heigh
 
 	SetPosition(Vector3(20, 50, 0));
 	Speed = 6.f;
-	Aggro = 100000;
 	AttackRange = 2.f;
 	Cooldown = 2.f;
 	Dead = false;
@@ -92,11 +90,10 @@ void Warrior::Update(double dt)
 
 	// Dead
 	if (HP <= 0)
+	{
 		Dead = true;
-	else
-		Dead = false;
-	if (Dead)
 		WarriorSM.SetState("Dead");
+	}	
 
 	// Attack Cooldown
 
@@ -164,7 +161,12 @@ void Warrior::Update(double dt)
 	}
 	else if (WarriorSM.GetState() == "Dead")
 	{
-		// Immobilized until teammate revives him
+		Aggro = 0;
+		if (HP > 0)
+		{
+			Dead = false;
+			WarriorSM.SetState("Chase Enemy");
+		}
 	}
 }
 

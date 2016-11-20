@@ -104,7 +104,22 @@ void MobEntity::Init(EntityManager* EManager, float world_width, float world_hei
 void MobEntity::DetermineTarget()
 {
 	// if aggro equal, go after closest target, else go after highest aggro
-
+	int temp = 0;
+	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
+	{
+		if ((*it)->GetDead())
+		{
+			temp = 0;
+			Target = "";
+		}
+		if ((*it)->GetName() != "Mob" && (*it)->GetAggro() >= temp)
+		{
+			temp = (*it)->GetAggro();
+			Target = (*it)->GetName();
+		}
+		else
+			Target = "Warrior";
+	}
 }
 
 void MobEntity::Update(double dt)
