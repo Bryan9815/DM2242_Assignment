@@ -105,22 +105,10 @@ void MobEntity::DetermineTarget()
 {
 	// if aggro equal, go after closest target, else go after highest aggro
 	int temp_Aggro = 0;
+	float temp_Dist = 0;
     bool temp = false;
 	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
 	{
-		/*if ((*it)->GetDead())
-		{
-			temp = 0;
-			Target = "";
-		}
-		if ((*it)->GetName() != "Mob" && (*it)->GetAggro() >= temp)
-		{
-			temp = (*it)->GetAggro();
-			Target = (*it)->GetName();
-		}
-		else
-			Target = "Warrior";*/
-
         if ((*it)->GetName() != "Mob")
         {
             if (!(*it)->GetDead())
@@ -128,7 +116,8 @@ void MobEntity::DetermineTarget()
                 if (!temp)
                 {
                     temp_Aggro = (*it)->GetAggro();
-                    Target = (*it)->GetName();
+					temp_Dist = EManager->FindDistanceBetweenEntities(Position, (*it)->GetName());
+					Target = (*it)->GetName();
                     temp = true;
                 }                    
                 else
@@ -136,12 +125,14 @@ void MobEntity::DetermineTarget()
                     if ((*it)->GetAggro() > temp_Aggro)
                     {
                         temp_Aggro = (*it)->GetAggro();
+						temp_Dist = EManager->FindDistanceBetweenEntities(Position, (*it)->GetName());
                         Target = (*it)->GetName();
                     }
                     else if ((*it)->GetAggro() == temp_Aggro)
                     {
                         //if aggro is the same
-
+						if (EManager->FindDistanceBetweenEntities(Position, (*it)->GetName()) < temp_Dist)
+							Target = (*it)->GetName();
                     }
                 }
             }
