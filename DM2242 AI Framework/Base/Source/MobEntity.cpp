@@ -18,7 +18,7 @@ MobEntity::~MobEntity()
 void MobEntity::Init(EntityManager* EManager, float world_width, float world_height)
 {
     this->EManager = EManager;
-    HP = 300;
+    HP = 3000;
 	Stunned = false;
 	SetPosition(Vector3(50, 50, 0));
 	this->world_height = world_height;
@@ -104,10 +104,11 @@ void MobEntity::Init(EntityManager* EManager, float world_width, float world_hei
 void MobEntity::DetermineTarget()
 {
 	// if aggro equal, go after closest target, else go after highest aggro
-	int temp = 0;
+	int temp_Aggro = 0;
+    bool temp = false;
 	for (vector<BaseEntity*>::iterator it = EManager->EntityList.begin(); it != EManager->EntityList.end(); ++it)
 	{
-		if ((*it)->GetDead())
+		/*if ((*it)->GetDead())
 		{
 			temp = 0;
 			Target = "";
@@ -118,8 +119,36 @@ void MobEntity::DetermineTarget()
 			Target = (*it)->GetName();
 		}
 		else
-			Target = "Warrior";
+			Target = "Warrior";*/
+
+        if ((*it)->GetName() != "Mob")
+        {
+            if (!(*it)->GetDead())
+            {
+                if (!temp)
+                {
+                    temp_Aggro = (*it)->GetAggro();
+                    Target = (*it)->GetName();
+                    temp = true;
+                }                    
+                else
+                {
+                    if ((*it)->GetAggro() > temp_Aggro)
+                    {
+                        temp_Aggro = (*it)->GetAggro();
+                        Target = (*it)->GetName();
+                    }
+                    else if ((*it)->GetAggro() == temp_Aggro)
+                    {
+                        //if aggro is the same
+
+                    }
+                }
+            }
+        }
 	}
+    if (!temp) // if cant find
+        Target = "";
 }
 
 void MobEntity::Update(double dt)
