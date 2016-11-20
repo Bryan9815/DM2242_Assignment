@@ -20,16 +20,18 @@ public:
     void WrapAroundScreen();
     StateMachine HealerSM;
 private:
+    EntityManager* Entity_Manager;
     bool DeadAlly;
     float NearestDeadAllyDist;
     float NearestEnemyDist;
-    int NearEnemies;
-    EntityManager* Entity_Manager;
+    int NearEnemies;    
     float AttackRange;
     float AttackReset_Timer;
     int AttackDamage;
     float MovementSpeed;
     int healAmt;
+    bool InjuredAlly;
+    BaseEntity* InjuredAllyEntity;
 };
 
 

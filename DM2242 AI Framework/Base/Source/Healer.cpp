@@ -29,6 +29,7 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     NearestDeadAllyDist = 0;
     NearEnemies = 0;
     AttackReset_Timer = 0;
+    InjuredAllyEntity = NULL;
     //states
     HealerSM.Init();
     HealerSM.AddState("Move");
@@ -46,6 +47,8 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     Name = "Ranger";
     SetPosition(startpos);
     this->Entity_Manager = Entity_Manager;
+
+
     AttackRange = 4.0f;
     AttackDamage = 3.0f;
     MovementSpeed = 4.f;
@@ -53,6 +56,10 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;
     NearEnemies = 0;
+    AttackReset_Timer = 0;
+    InjuredAllyEntity = NULL;
+
+
     HealerSM.Init();
     HealerSM.AddState("Move");
     HealerSM.AddState("Shoot");
@@ -61,7 +68,7 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
 
     HealerSM.SetState("Move");
 
-    AttackReset_Timer = 0;
+    
 }
 void HealerEntity::Update(double dt)
 {
@@ -106,6 +113,10 @@ void HealerEntity::StateCheck()
     {
         if (!DeadAlly)
             HealerSM.SetState("Move");
+    }
+    else if (HealerSM.GetState() == "Heal")
+    {
+        
     }
     else
     {
@@ -180,6 +191,14 @@ void HealerEntity::UpdateVariables(double dt)
     BaseEntity* temp;
     DeadAlly = Entity_Manager->Hero_getDead(Name);
 
+    for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
+    {
+        if ((*it)->GetName() != "Mob" && (*it)->GetHP() < 50)
+        {
+            InjuredAllyEntity = (*it);
+            InjuredAlly = true;
+        }
+    }
 }
 
 void HealerEntity::Revive()
