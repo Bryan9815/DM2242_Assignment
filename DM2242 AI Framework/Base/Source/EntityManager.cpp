@@ -216,5 +216,4 @@ BaseEntity* EntityManager::GetNearestDeadHero(string Name_of_finder)
             return (*it);
         }
     }
-
 }

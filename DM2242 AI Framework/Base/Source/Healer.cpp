@@ -1,68 +1,69 @@
-#include "RangerEntity.h"
+#include "Healer.h"
 #include "Warrior.h"
+#include "RangerEntity.h"
 #define MAXHP 100
-#define STARTPOS Vector3(10,45,0)
-#define TIME_BETWEEN_ATTACKS 1.0f
-#define REVIVE_RANGE 0.7f
-RangerEntity::RangerEntity()
+#define STARTPOS Vector3(5,45,0)
+#define TIME_BETWEEN_ATTACKS 1.5f
+#define REVIVE_RANGE 1.4f
+HealerEntity::HealerEntity()
 {
-    Name = "Ranger";
 }
 
-
-RangerEntity::~RangerEntity()
+HealerEntity::~HealerEntity()
 {
-    Delete();
 }
-void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height)
+
+void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height)
 {
     this->world_height = world_height;
     this->world_width = world_width;
-    SetPosition(STARTPOS);
     this->Entity_Manager = Entity_Manager;
-    AttackRange = 5.0f;
-    AttackDamage = 5.0f;
-    MovementSpeed = 5.0f;
+    SetPosition(STARTPOS);
+
+    //stats
+    AttackRange = 4.0f;
+    AttackDamage = 3.0f;
+    MovementSpeed = 4.0f;
     DeadAlly = false;
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;
     NearEnemies = 0;
-    RangerSM.Init();
-    RangerSM.AddState("Move");
-    RangerSM.AddState("Shoot");
-    RangerSM.AddState("Death"); 
-    RangerSM.AddState("Bomb");
-    RangerSM.AddState("Revive");
-
-    RangerSM.SetState("Move");
-
     AttackReset_Timer = 0;
+    //states
+    HealerSM.Init();
+    HealerSM.AddState("Move");
+    HealerSM.AddState("Shoot");
+    HealerSM.AddState("Death");
+    HealerSM.AddState("Revive");
+    HealerSM.AddState("Heal");
+    //set starting state
+    HealerSM.SetState("Move");
+    
 }
 
-void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height, Vector3 startpos)
+void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height, Vector3 startpos)
 {
     Name = "Ranger";
     SetPosition(startpos);
     this->Entity_Manager = Entity_Manager;
-    AttackRange = 5.0f;
-    AttackDamage = 5.0f;
-    MovementSpeed = 5.f;
+    AttackRange = 4.0f;
+    AttackDamage = 3.0f;
+    MovementSpeed = 4.f;
     DeadAlly = false;
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;
     NearEnemies = 0;
-    RangerSM.Init();
-    RangerSM.AddState("Move");
-    RangerSM.AddState("Shoot");
-    RangerSM.AddState("Death");
-    RangerSM.AddState("Bomb");
-    RangerSM.AddState("Revive");
+    HealerSM.Init();
+    HealerSM.AddState("Move");
+    HealerSM.AddState("Shoot");
+    HealerSM.AddState("Death");
+    HealerSM.AddState("Revive");
 
-    RangerSM.SetState("Move");
+    HealerSM.SetState("Move");
 
     AttackReset_Timer = 0;
 }
-void RangerEntity::Update(double dt)
+void HealerEntity::Update(double dt)
 {
     WrapAroundScreen();
     UpdateVariables(dt);
@@ -70,52 +71,41 @@ void RangerEntity::Update(double dt)
     StateRun(dt);
 }
 
-void RangerEntity::Delete()
+void HealerEntity::Delete()
 {
 
 }
 
-void RangerEntity::StateCheck()
+void HealerEntity::StateCheck()
 {
     if (HP <= 0)
     {
-        RangerSM.SetState("Death");
+        HealerSM.SetState("Death");
         Dead = true;
         Aggro = 0;
         return;
     }
-        
-    if (RangerSM.GetState() == "Move")
-    {        
-        if (DeadAlly)
-            RangerSM.SetState("Revive");        
-        if (NearestEnemyDist <= 7)
-            RangerSM.SetState("Shoot");
-    }
-    else if (RangerSM.GetState() == "Shoot")
+    if (HealerSM.GetState() == "Move")
     {
-        if (NearestEnemyDist > 7)
-        {
-            RangerSM.SetState("Move");
-        }
-            
         if (DeadAlly)
-            RangerSM.SetState("Revive");
+            HealerSM.SetState("Revive");
+        if (NearestEnemyDist <= 7)
+            HealerSM.SetState("Shoot");
+    }
+    else if (HealerSM.GetState() == "Shoot")
+    {
+        if (NearestEnemyDist > 6)
+        {
+            HealerSM.SetState("Move");
+        }
+        if (DeadAlly)
+            HealerSM.SetState("Revive");
 
     }
-    /*else if (RangerSM.GetState() == "Bomb")
-    {
-        if (NearEnemies < 4)
-            RangerSM.SetState("Shoot");
-    }*/
-    else if (RangerSM.GetState() == "Death")
-    {
-        
-    }    
-    else if (RangerSM.GetState() == "Revive")
+    else if (HealerSM.GetState() == "Revive")
     {
         if (!DeadAlly)
-            RangerSM.SetState("Move");
+            HealerSM.SetState("Move");
     }
     else
     {
@@ -123,25 +113,16 @@ void RangerEntity::StateCheck()
     }
 }
 
-void RangerEntity::Revive()
+void HealerEntity::StateRun(double dt)
 {
-    if (RangerSM.GetState() == "Death")
-    {
-        HP = MAXHP;
-        RangerSM.SetState("Move");
-    }    
-}
-
-void RangerEntity::StateRun(double dt)
-{
-    if (RangerSM.GetState() == "Move")
+    if (HealerSM.GetState() == "Move")
     {
         if (NearestEnemyDist > AttackRange)
             Position += (Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position).Normalize() * MovementSpeed * dt;
         else
-            RangerSM.SetState("Shoot");
+            HealerSM.SetState("Shoot");
     }
-    else if (RangerSM.GetState() == "Shoot")
+    else if (HealerSM.GetState() == "Shoot")
     {
         if (NearestEnemyDist < 6.5)
         {
@@ -156,16 +137,16 @@ void RangerEntity::StateRun(double dt)
     }
     /*else if (RangerSM.GetState() == "Bomb")
     {
-        
+
     }*/
-    else if (RangerSM.GetState() == "Death")
+    else if (HealerSM.GetState() == "Death")
     {
 
     }
-    else if (RangerSM.GetState() == "Revive")
+    else if (HealerSM.GetState() == "Revive")
     {
         BaseEntity* tempEntity = Entity_Manager->GetNearestDeadHero(Name);
-        
+
         if ((Position - tempEntity->GetPosition()).Length() > REVIVE_RANGE)
         {
             Position += (tempEntity->GetPosition() - Position).Normalize() * MovementSpeed * dt;
@@ -176,13 +157,13 @@ void RangerEntity::StateRun(double dt)
         {
             Warrior* tempWarrior = dynamic_cast<Warrior*>(tempEntity);
             tempWarrior->SetHP(100);
-            RangerSM.SetState("Move");
+            HealerSM.SetState("Move");
         }
         else if (tempEntity->GetName() == "Healer")
         {
 
         }
-   
+
     }
     else
     {
@@ -191,17 +172,27 @@ void RangerEntity::StateRun(double dt)
 }
 
 
-void RangerEntity::UpdateVariables(double dt)
+void HealerEntity::UpdateVariables(double dt)
 {
     NearestEnemyDist = Entity_Manager->FindDistanceBetweenEntities(Position, "Mob");
     if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
         AttackReset_Timer += dt;
     BaseEntity* temp;
     DeadAlly = Entity_Manager->Hero_getDead(Name);
-    
+
 }
 
-void RangerEntity::WrapAroundScreen()
+void HealerEntity::Revive()
+{
+    if (HealerSM.GetState() == "Death")
+    {
+        HP = MAXHP;
+        HealerSM.SetState("Move");
+        SetDead(false);
+    }
+}
+
+void HealerEntity::WrapAroundScreen()
 {
 #define OFFSET (scale * 0.5f)
 
