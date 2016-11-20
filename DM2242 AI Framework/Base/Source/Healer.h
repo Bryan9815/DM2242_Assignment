@@ -30,6 +30,8 @@ private:
     int AttackDamage;
     float MovementSpeed;
     int healAmt;
+    float HealRange;
+    float HealReset_Timer;
     bool InjuredAlly;
     BaseEntity* InjuredAllyEntity;
 };

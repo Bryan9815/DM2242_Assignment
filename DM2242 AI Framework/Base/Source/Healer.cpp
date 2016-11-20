@@ -5,6 +5,7 @@
 #define STARTPOS Vector3(5,45,0)
 #define TIME_BETWEEN_ATTACKS 1.5f
 #define REVIVE_RANGE 1.4f
+#define TIME_BETWEEN_HEALS 2.0f
 HealerEntity::HealerEntity()
 {
 }
@@ -30,6 +31,9 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     NearEnemies = 0;
     AttackReset_Timer = 0;
     InjuredAllyEntity = NULL;
+    HealRange = 7.f;
+    healAmt = 10.f;
+    HealReset_Timer = 0;
     //states
     HealerSM.Init();
     HealerSM.AddState("Move");
@@ -58,7 +62,9 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     NearEnemies = 0;
     AttackReset_Timer = 0;
     InjuredAllyEntity = NULL;
-
+    HealRange = 7.f;
+    healAmt = 10.f;
+    HealReset_Timer = 0;
 
     HealerSM.Init();
     HealerSM.AddState("Move");
@@ -95,28 +101,59 @@ void HealerEntity::StateCheck()
     if (HealerSM.GetState() == "Move")
     {
         if (DeadAlly)
+        {
             HealerSM.SetState("Revive");
+            return;
+        }
+        if (InjuredAlly)
+        {
+            HealerSM.SetState("Heal");
+            return;
+        }
         if (NearestEnemyDist <= 7)
+        {
             HealerSM.SetState("Shoot");
+            return;
+        }
+
     }
     else if (HealerSM.GetState() == "Shoot")
     {
         if (NearestEnemyDist > 6)
         {
             HealerSM.SetState("Move");
+            return;
         }
         if (DeadAlly)
+        {
             HealerSM.SetState("Revive");
+            return;
+        }
+            
+        if (InjuredAlly)
+        {
+            HealerSM.SetState("Heal");
+            return;
+        }
 
     }
     else if (HealerSM.GetState() == "Revive")
     {
         if (!DeadAlly)
+        {
             HealerSM.SetState("Move");
+            return;
+        }
+            
     }
     else if (HealerSM.GetState() == "Heal")
     {
-        
+        if (!InjuredAlly)
+        {
+            HealerSM.SetState("Move");
+            return;
+        }
+            
     }
     else
     {
@@ -146,10 +183,22 @@ void HealerEntity::StateRun(double dt)
             Aggro += AttackDamage;
         }
     }
-    /*else if (RangerSM.GetState() == "Bomb")
+    else if (HealerSM.GetState() == "Heal")
     {
-
-    }*/
+        Vector3 injuredDistVec = InjuredAllyEntity->GetPosition();
+        if ((Position - injuredDistVec).Length() < HealRange)
+            Position += -(injuredDistVec - Position).Normalize() * MovementSpeed * dt;
+        else
+        {
+            if (HealReset_Timer > TIME_BETWEEN_HEALS)
+            {
+                HealReset_Timer = 0;
+                InjuredAllyEntity->SetHP(InjuredAllyEntity->GetHP() + healAmt);
+                Aggro += healAmt;
+            }
+        }
+            
+    }
     else if (HealerSM.GetState() == "Death")
     {
 
@@ -188,12 +237,15 @@ void HealerEntity::UpdateVariables(double dt)
     NearestEnemyDist = Entity_Manager->FindDistanceBetweenEntities(Position, "Mob");
     if (AttackReset_Timer < TIME_BETWEEN_ATTACKS)
         AttackReset_Timer += dt;
+    if (HealReset_Timer < TIME_BETWEEN_HEALS)
+        HealReset_Timer += dt;
     BaseEntity* temp;
     DeadAlly = Entity_Manager->Hero_getDead(Name);
 
+    InjuredAlly = false;
     for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
     {
-        if ((*it)->GetName() != "Mob" && (*it)->GetHP() < 50)
+        if ((*it)->GetName() != "Mob" || (*it)->GetName() != "Healer" && (*it)->GetHP() < 50)
         {
             InjuredAllyEntity = (*it);
             InjuredAlly = true;
