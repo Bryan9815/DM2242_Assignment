@@ -35,6 +35,7 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     HealRange = 7.f;
     healAmt = 10.f;
     HealReset_Timer = 0;
+    MovementDirVec = 0;
     //states
     HealerSM.Init();
     HealerSM.AddState("Move");
@@ -66,6 +67,7 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     HealRange = 7.f;
     healAmt = 10.f;
     HealReset_Timer = 0;
+    MovementDirVec = 0;
 
     HealerSM.Init();
     HealerSM.AddState("Move");
@@ -79,6 +81,7 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
 }
 void HealerEntity::Update(double dt)
 {
+    MovementDirVec = 0;
     WrapAroundScreen();
     UpdateVariables(dt);
     StateCheck();
@@ -281,4 +284,9 @@ void HealerEntity::WrapAroundScreen()
         Position.y = -OFFSET;
     else if (Position.y < -OFFSET)
         Position.y = world_height + OFFSET;
+}
+
+void HealerEntity::Move()
+{
+
 }
