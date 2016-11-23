@@ -7,6 +7,7 @@
 #include "RangerEntity.h"
 #include "Warrior.h"
 #include "MobEntity.h"
+#include "Healer.h"
 
 class SceneAI : public SceneBase
 {
@@ -54,6 +55,7 @@ protected:
     EntityManager* Entity_Manager;
     RangerEntity* Ranger;
     Warrior* warrior;
+    HealerEntity* Healer;
     MobEntity* mob;
 };
 

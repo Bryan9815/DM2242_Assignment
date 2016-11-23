@@ -8,6 +8,7 @@
 #define TIME_BETWEEN_HEALS 2.0f
 HealerEntity::HealerEntity()
 {
+    Name = "Healer";
 }
 
 HealerEntity::~HealerEntity()
@@ -48,7 +49,7 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
 
 void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height, Vector3 startpos)
 {
-    Name = "Ranger";
+    
     SetPosition(startpos);
     this->Entity_Manager = Entity_Manager;
 
@@ -105,12 +106,12 @@ void HealerEntity::StateCheck()
             HealerSM.SetState("Revive");
             return;
         }
-        if (InjuredAlly)
+        else if (InjuredAlly)
         {
             HealerSM.SetState("Heal");
             return;
         }
-        if (NearestEnemyDist <= 7)
+        else if (NearestEnemyDist <= 7)
         {
             HealerSM.SetState("Shoot");
             return;
@@ -118,24 +119,22 @@ void HealerEntity::StateCheck()
 
     }
     else if (HealerSM.GetState() == "Shoot")
-    {
-        if (NearestEnemyDist > 6)
-        {
-            HealerSM.SetState("Move");
-            return;
-        }
+    {        
         if (DeadAlly)
         {
             HealerSM.SetState("Revive");
             return;
-        }
-            
-        if (InjuredAlly)
+        }            
+        else if (InjuredAlly)
         {
             HealerSM.SetState("Heal");
             return;
         }
-
+        else if (NearestEnemyDist > 6)
+        {
+            HealerSM.SetState("Move");
+            return;
+        }
     }
     else if (HealerSM.GetState() == "Revive")
     {
@@ -219,9 +218,11 @@ void HealerEntity::StateRun(double dt)
             tempWarrior->SetHP(100);
             HealerSM.SetState("Move");
         }
-        else if (tempEntity->GetName() == "Healer")
+        else if (tempEntity->GetName() == "Ranger")
         {
-
+            RangerEntity* tempRanger = dynamic_cast<RangerEntity*>(tempEntity);
+            tempRanger->SetHP(100);
+            HealerSM.SetState("Move");
         }
 
     }
@@ -245,10 +246,14 @@ void HealerEntity::UpdateVariables(double dt)
     InjuredAlly = false;
     for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
     {
-        if ((*it)->GetName() != "Mob" || (*it)->GetName() != "Healer" && (*it)->GetHP() < 50)
+        if (((*it)->GetName() != "Mob" && (*it)->GetName() != "Healer") && (*it)->GetHP() < 50)
         {
-            InjuredAllyEntity = (*it);
-            InjuredAlly = true;
+            if (!(*it)->GetDead())
+            {
+                InjuredAllyEntity = (*it);
+                InjuredAlly = true;
+            }
+            
         }
     }
 }

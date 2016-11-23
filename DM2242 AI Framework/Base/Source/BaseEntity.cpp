@@ -58,3 +58,8 @@ std::string BaseEntity::GetName()
 {
     return Name;
 }
+
+float BaseEntity::GetScale()
+{
+    return scale;
+}

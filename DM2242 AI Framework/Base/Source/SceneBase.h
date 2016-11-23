@@ -59,6 +59,7 @@ public:
         //Entities
         GEO_WARRIOR,
         GEO_RANGER,
+        GEO_HEALER,
         GEO_MOB,
 		NUM_GEOMETRY,
 	};

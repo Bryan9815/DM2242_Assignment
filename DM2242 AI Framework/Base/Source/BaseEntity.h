@@ -21,6 +21,7 @@ public:
     virtual Vector3 GetPosition();
     virtual void SetName(std::string Name);
     virtual std::string GetName();
+    virtual float GetScale();
 protected:
     int HP = 100;
 	unsigned int Aggro = 0;
@@ -29,7 +30,7 @@ protected:
     std::string Name;
     float world_width;
     float world_height;
-    float scale = 1.f;
+    float scale = 2.f;
 	float ReviveRange = 0.7f;
 };
 

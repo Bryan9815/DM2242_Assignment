@@ -24,7 +24,7 @@ void MobEntity::Init(EntityManager* EManager, float world_width, float world_hei
 	this->world_height = world_height;
 	this->world_width = world_width;
 	Speed = 5.f;
-	scale = 2.f;
+	scale = 4.f;
 	AttackRange = 1.5f;
 	Cooldown = 0.f;
     knockTimer = 0;

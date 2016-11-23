@@ -118,9 +118,10 @@ void SceneBase::Init()
 	meshList[GEO_ESHIP] = MeshBuilder::GenerateQuad("enemy ship", Color(1, 1, 1), 5.f);
 	meshList[GEO_ESHIP]->textureID = LoadTGA("Image//eShip.tga");
 
-    meshList[GEO_WARRIOR] = MeshBuilder::GenerateSphere("ball", Color(1, 1, 1), 8, 8, 1.f);
-    meshList[GEO_RANGER] = MeshBuilder::GenerateSphere("ball", Color(0, 1, 0), 8, 8, 1.f);
-    meshList[GEO_MOB] = MeshBuilder::GenerateSphere("ball", Color(1, 0, 0), 8, 8, 1.f);
+    meshList[GEO_WARRIOR] = MeshBuilder::GenerateSphere("ball", Color(0, 0, 1), 16, 16, 1.f);
+    meshList[GEO_RANGER] = MeshBuilder::GenerateSphere("ball", Color(1.0f, 0.271f, 0.000f), 16, 16, 1.f);
+    meshList[GEO_HEALER] = MeshBuilder::GenerateSphere("ball", Color(0.0f, 0.980f, 0.604f), 16, 16, 1.f);
+    meshList[GEO_MOB] = MeshBuilder::GenerateSphere("ball", Color(0.576f, 0.439f, 0.859f), 16, 16, 1.f);
 
 	bLightEnabled = false;
 }

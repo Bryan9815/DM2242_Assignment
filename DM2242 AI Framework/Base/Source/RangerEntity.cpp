@@ -88,19 +88,31 @@ void RangerEntity::StateCheck()
     if (RangerSM.GetState() == "Move")
     {        
         if (DeadAlly)
-            RangerSM.SetState("Revive");        
+        {
+            RangerSM.SetState("Revive");
+            return;
+        }
         if (NearestEnemyDist <= 7)
+        {
             RangerSM.SetState("Shoot");
+            return;
+        }
+            
     }
     else if (RangerSM.GetState() == "Shoot")
     {
         if (NearestEnemyDist > 7)
         {
             RangerSM.SetState("Move");
+            return;
         }
             
         if (DeadAlly)
+        {
             RangerSM.SetState("Revive");
+            return;
+        }
+            
 
     }
     /*else if (RangerSM.GetState() == "Bomb")
@@ -115,7 +127,11 @@ void RangerEntity::StateCheck()
     else if (RangerSM.GetState() == "Revive")
     {
         if (!DeadAlly)
+        {
             RangerSM.SetState("Move");
+            return;
+        }
+            
     }
     else
     {
