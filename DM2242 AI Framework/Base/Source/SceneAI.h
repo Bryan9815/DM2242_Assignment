@@ -21,7 +21,7 @@ public:
     void InitEntity();
 	virtual void Update(double dt);
 	virtual void Render();
-    void RenderEntity();
+    
 	virtual void Exit();
 
     void Insert_Text_On_Screen(float x, float y, float size, Color colour, string text);
@@ -31,6 +31,9 @@ public:
 
 	bool CheckCollision(GameObject *go1, GameObject *go2, float dt);
 	void CollisionResponse(GameObject *go1, GameObject *go2);
+
+    void RenderEntity();
+    void RenderEntityInfo();
 protected:
 
 	//Physics

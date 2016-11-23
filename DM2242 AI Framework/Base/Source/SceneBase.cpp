@@ -123,6 +123,8 @@ void SceneBase::Init()
     meshList[GEO_HEALER] = MeshBuilder::GenerateSphere("ball", Color(0.0f, 0.980f, 0.604f), 16, 16, 1.f);
     meshList[GEO_MOB] = MeshBuilder::GenerateSphere("ball", Color(0.576f, 0.439f, 0.859f), 16, 16, 1.f);
 
+    meshList[GEO_INFOBORDER] = MeshBuilder::GenerateCube("wall", Color(1, 1, 1), 1.f);
+
 	bLightEnabled = false;
 }
 

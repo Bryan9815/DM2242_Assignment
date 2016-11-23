@@ -61,6 +61,10 @@ public:
         GEO_RANGER,
         GEO_HEALER,
         GEO_MOB,
+
+        //Border
+        GEO_INFOBORDER,
+
 		NUM_GEOMETRY,
 	};
 public:
