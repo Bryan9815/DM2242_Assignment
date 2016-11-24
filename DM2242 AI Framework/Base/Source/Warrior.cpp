@@ -23,7 +23,6 @@ void Warrior::Init(EntityManager* EManager, float world_width, float world_heigh
 	Cooldown = 2.f;
 	Dead = false;
 	DeadAlly = false;
-    MovementDirVec = 0;
 	WarriorSM.AddState("Chase Enemy");
 	WarriorSM.AddState("Attack");
 	WarriorSM.AddState("Knocking Back");
@@ -50,7 +49,6 @@ void Warrior::Init(EntityManager* EManager, float world_width, float world_heigh
 	Cooldown = 2.f;
 	Dead = false;
 	DeadAlly = false;
-    MovementDirVec = 0;
 	WarriorSM.AddState("Chase Enemy");
 	WarriorSM.AddState("Attack");
 	WarriorSM.AddState("Knocking Back");

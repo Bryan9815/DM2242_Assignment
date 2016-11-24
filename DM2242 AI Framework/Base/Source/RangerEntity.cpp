@@ -27,7 +27,6 @@ void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;
     NearEnemies = 0;
-    MovementDirVec = 0;
     RangerSM.Init();
     RangerSM.AddState("Move");
     RangerSM.AddState("Shoot");
@@ -52,7 +51,6 @@ void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     NearestEnemyDist = 0;
     NearestDeadAllyDist = 0;
     NearEnemies = 0;
-    MovementDirVec = 0;
     RangerSM.Init();
     RangerSM.AddState("Move");
     RangerSM.AddState("Shoot");

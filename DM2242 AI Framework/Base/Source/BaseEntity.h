@@ -31,8 +31,7 @@ protected:
     float world_width;
     float world_height;
     float scale = 2.f;
-	float ReviveRange = 2.0f;
-    Vector3 MovementDirVec;
+	float ReviveRange = 0.7f;
 };
 
 #endif
