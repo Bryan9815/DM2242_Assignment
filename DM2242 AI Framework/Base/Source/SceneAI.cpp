@@ -306,6 +306,7 @@ void SceneAI::Insert_Text_On_Screen(float x, float y, float size, Color colour, 
 
 void SceneAI::RenderEntityInfo()
 {
+#define OFFSET 5.f 
     //renderBorder
     modelStack.PushMatrix();
     modelStack.Translate((m_worldWidth * 0.5f),(m_worldHeight * 0.25f),0);
