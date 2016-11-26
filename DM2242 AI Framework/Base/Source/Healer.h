@@ -16,8 +16,6 @@ public:
     void StateRun(double dt);
     void UpdateVariables(double dt);
     void Revive();
-    void Move(double dt);
-    void PreventOverlap();
 
     void WrapAroundScreen();
     StateMachine HealerSM;
@@ -36,7 +34,6 @@ private:
     float HealReset_Timer;
     bool InjuredAlly;
     BaseEntity* InjuredAllyEntity;
-    
 };
 
 

@@ -35,7 +35,6 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     HealRange = 7.f;
     healAmt = 10.f;
     HealReset_Timer = 0;
-    MovementDirVec = 0;
     //states
     HealerSM.Init();
     HealerSM.AddState("Move");
@@ -67,7 +66,6 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     HealRange = 7.f;
     healAmt = 10.f;
     HealReset_Timer = 0;
-    MovementDirVec = 0;
 
     HealerSM.Init();
     HealerSM.AddState("Move");
@@ -81,13 +79,10 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
 }
 void HealerEntity::Update(double dt)
 {
-    MovementDirVec = 0;
     WrapAroundScreen();
     UpdateVariables(dt);
     StateCheck();
     StateRun(dt);
-    PreventOverlap();
-    Move(dt);
 }
 
 void HealerEntity::Delete()
@@ -170,15 +165,15 @@ void HealerEntity::StateRun(double dt)
     if (HealerSM.GetState() == "Move")
     {
         if (NearestEnemyDist > AttackRange)
-            MovementDirVec = (Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position);//.Normalize(); //* MovementSpeed * dt;
+            Position += (Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position).Normalize() * MovementSpeed * dt;
         else
             HealerSM.SetState("Shoot");
     }
     else if (HealerSM.GetState() == "Shoot")
     {
-        if (NearestEnemyDist < 6.5f)
-        {            
-            MovementDirVec = -(Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position);//.Normalize(); //* MovementSpeed * dt;
+        if (NearestEnemyDist < 6.5)
+        {
+            Position += -(Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position).Normalize() * MovementSpeed * dt;
         }
         if (AttackReset_Timer > TIME_BETWEEN_ATTACKS)
         {
@@ -191,7 +186,7 @@ void HealerEntity::StateRun(double dt)
     {
         Vector3 injuredDistVec = InjuredAllyEntity->GetPosition();
         if ((Position - injuredDistVec).Length() < HealRange)
-            MovementDirVec = (injuredDistVec - Position);//.Normalize(); //* MovementSpeed * dt;
+            Position += -(injuredDistVec - Position).Normalize() * MovementSpeed * dt;
         else
         {
             if (HealReset_Timer > TIME_BETWEEN_HEALS)
@@ -201,7 +196,6 @@ void HealerEntity::StateRun(double dt)
                 Aggro += healAmt;
             }
         }
-        
             
     }
     else if (HealerSM.GetState() == "Death")
@@ -214,7 +208,7 @@ void HealerEntity::StateRun(double dt)
 
         if ((Position - tempEntity->GetPosition()).Length() > REVIVE_RANGE)
         {
-            MovementDirVec = (tempEntity->GetPosition() - Position);//.Normalize(); //* MovementSpeed * dt;
+            Position += (tempEntity->GetPosition() - Position).Normalize() * MovementSpeed * dt;
             return;
         }
 
@@ -236,8 +230,6 @@ void HealerEntity::StateRun(double dt)
     {
 
     }
-
-
 }
 
 
@@ -289,25 +281,4 @@ void HealerEntity::WrapAroundScreen()
         Position.y = -OFFSET;
     else if (Position.y < -OFFSET)
         Position.y = world_height + OFFSET;
-}
-
-void HealerEntity::Move(double dt)
-{
-    if (MovementDirVec == Vector3(0, 0, 0))
-        return;
-    Position += MovementDirVec.Normalize() * MovementSpeed * dt;
-}
-void HealerEntity::PreventOverlap()
-{
-    for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
-    {
-        if ((*it)->GetName() != "Healer" && (*it)->GetName() != "Mob")
-        {
-            if (((*it)->GetPosition() - Position).Length() <
-                (((*it)->GetScale() + scale)))
-            {
-                MovementDirVec += ((*it)->GetPosition() - Position);
-            }
-        }
-    }
 }
