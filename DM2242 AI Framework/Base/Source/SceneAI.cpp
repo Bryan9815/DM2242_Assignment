@@ -231,12 +231,12 @@ void SceneAI::RenderEntity()
             modelStack.Scale((*it)->GetScale(), (*it)->GetScale(), (*it)->GetScale());
             RenderMesh(meshList[GEO_RANGER], false);
 
-            RangerEntity* tempRanger = dynamic_cast<RangerEntity*>((*it));
+            //RangerEntity* tempRanger = dynamic_cast<RangerEntity*>((*it));
 
             //Insert_Text_On_Screen(temp.x - 2, temp.y + 3, 2.f, Color(1, 1, 1), (*it)->GetName());//render HP below entity
 
 
-            Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            //Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
             //Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), tempRanger->RangerSM.GetState());//render state
         }
         else if ((*it)->GetName() == "Warrior")
@@ -246,12 +246,12 @@ void SceneAI::RenderEntity()
             modelStack.Scale((*it)->GetScale(), (*it)->GetScale(), (*it)->GetScale());
             RenderMesh(meshList[GEO_WARRIOR], false);
 
-            Warrior* tempWarrior = dynamic_cast<Warrior*>((*it));
+            //Warrior* tempWarrior = dynamic_cast<Warrior*>((*it));
 
             //Insert_Text_On_Screen(temp.x - 2, temp.y + 3, 2.f, Color(1, 1, 1), (*it)->GetName());//render HP below entity
 
 
-            Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            //Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
             //Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), tempWarrior->WarriorSM.GetState());//render state
 
         }
@@ -262,12 +262,12 @@ void SceneAI::RenderEntity()
             modelStack.Scale((*it)->GetScale(), (*it)->GetScale(), (*it)->GetScale());
             RenderMesh(meshList[GEO_HEALER], false);
 
-            HealerEntity* tempHealer = dynamic_cast<HealerEntity*>((*it));
+            //HealerEntity* tempHealer = dynamic_cast<HealerEntity*>((*it));
 
             //Insert_Text_On_Screen(temp.x - 2, temp.y + 3, 2.f, Color(1, 1, 1), (*it)->GetName());//render HP below entity
 
 
-            Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            //Insert_Text_On_Screen(temp.x - 2, temp.y - 3, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
             //Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), tempHealer->HealerSM.GetState());//render state
 
         }
@@ -278,12 +278,12 @@ void SceneAI::RenderEntity()
             modelStack.Scale((*it)->GetScale(), (*it)->GetScale(), (*it)->GetScale());
             RenderMesh(meshList[GEO_MOB], false);
 
-            MobEntity* tempMob = dynamic_cast<MobEntity*>((*it));
+            //MobEntity* tempMob = dynamic_cast<MobEntity*>((*it));
 
             //Insert_Text_On_Screen(temp.x - 2, temp.y + 5, 2.f, Color(1, 1, 1), (*it)->GetName());//render HP below entity
 
 
-            Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
+            //Insert_Text_On_Screen(temp.x - 2, temp.y - 5, 2.f, Color(1, 1, 1), to_string((*it)->GetHP()));//render HP below entity
             //Insert_Text_On_Screen(temp.x - 2, temp.y - 8, 2.f, Color(1, 1, 1), tempMob->MobSM.GetState());//render state
         }
         else
@@ -316,40 +316,49 @@ void SceneAI::RenderEntityInfo()
     for (vector<BaseEntity*>::iterator it = Entity_Manager->EntityList.begin(); it != Entity_Manager->EntityList.end(); ++it)
     {
         modelStack.PushMatrix();
+        Insert_Text_On_Screen(0.f, 10.f, 4.f, Color(1, 1, 1), "Entity:");
+        Insert_Text_On_Screen(0.f, 5.f, 4.f, Color(1, 1, 1), " State:");
+        Insert_Text_On_Screen(0.f, 1.5f, 4.f, Color(1, 1, 1), "    HP:");
+
         if ((*it)->GetName() == "Warrior")
         {
             
-            Insert_Text_On_Screen((m_worldWidth * 0.25f) * 0.5f, 10.f, 4.f, Color(1, 1, 1), (*it)->GetName());//entity name
-
+            Insert_Text_On_Screen((m_worldWidth * 0.25f) * 0.5f, 10.f, 4.f, Color(0, 0, 1), (*it)->GetName());//entity name
             Warrior* tempWarrior = dynamic_cast<Warrior*>((*it));
-
             Insert_Text_On_Screen((m_worldWidth * 0.25f) * 0.5f, 5.f, 4.f, Color(1, 1, 1), tempWarrior->WarriorSM.GetState());//get state
+            Insert_Text_On_Screen((m_worldWidth * 0.25f) * 0.5f, 1.5f, 4.f, Color(1, 1, 1), to_string(tempWarrior->GetHP()));//get hp
         }
         else if ((*it)->GetName() == "Mob")
         {
-            Insert_Text_On_Screen((m_worldWidth * 0.5f) - ((m_worldWidth * 0.25f) * 0.5f), 10.f, 4.f, Color(1, 1, 1), (*it)->GetName());//entity name
+            Insert_Text_On_Screen((m_worldWidth * 0.5f) - ((m_worldWidth * 0.25f) * 0.5f), 10.f, 4.f, Color(0.576f, 0.439f, 0.859f), (*it)->GetName());//entity name
 
             MobEntity* tempMob = dynamic_cast<MobEntity*>((*it));
 
             Insert_Text_On_Screen((m_worldWidth * 0.5f) - ((m_worldWidth * 0.25f) * 0.5f), 5.f, 4.f, Color(1, 1, 1), tempMob->MobSM.GetState());//get state
+
+            Insert_Text_On_Screen((m_worldWidth * 0.5f) - ((m_worldWidth * 0.25f) * 0.5f), 1.5f, 4.f, Color(1, 1, 1), to_string(tempMob->GetHP()));//get hp
         }
         
         else if ((*it)->GetName() == "Ranger")
         {
-            Insert_Text_On_Screen((m_worldWidth * 0.75f) - ((m_worldWidth * 0.25f) * 0.5f), 10.f, 4.f, Color(1, 1, 1), (*it)->GetName());//entity name
+            Insert_Text_On_Screen((m_worldWidth * 0.75f) - ((m_worldWidth * 0.25f) * 0.5f), 10.f, 4.f, Color(1.0f, 0.271f, 0.000f), (*it)->GetName());//entity name
 
             RangerEntity* tempRanger = dynamic_cast<RangerEntity*>((*it));
 
             Insert_Text_On_Screen((m_worldWidth * 0.75f) - ((m_worldWidth * 0.25f) * 0.5f), 5.f, 4.f, Color(1, 1, 1), tempRanger->RangerSM.GetState());//get state
+
+            Insert_Text_On_Screen((m_worldWidth * 0.75f) - ((m_worldWidth * 0.25f) * 0.5f), 1.5f, 4.f, Color(1, 1, 1), to_string(tempRanger->GetHP()));//get hp
         }
         
         else if ((*it)->GetName() == "Healer")
         {
-            Insert_Text_On_Screen((m_worldWidth) - ((m_worldWidth * 0.25f) * 0.5f), 10.f, 4.f, Color(1, 1, 1), (*it)->GetName());//entity name
+            Insert_Text_On_Screen((m_worldWidth)-((m_worldWidth * 0.25f) * 0.5f), 10.f, 4.f, Color(0.0f, 0.980f, 0.604f), (*it)->GetName());//entity name
 
             HealerEntity* tempHealer = dynamic_cast<HealerEntity*>((*it));
 
             Insert_Text_On_Screen((m_worldWidth)-((m_worldWidth * 0.25f) * 0.5f), 5.f, 4.f, Color(1, 1, 1), tempHealer->HealerSM.GetState());//get state
+
+            Insert_Text_On_Screen((m_worldWidth)-((m_worldWidth * 0.25f) * 0.5f), 1.5f, 4.f, Color(1, 1, 1), to_string(tempHealer->GetHP()));//get hp
 
         }
         modelStack.PopMatrix();

@@ -7,6 +7,7 @@ public:
     RangerEntity();
     ~RangerEntity();
 
+    void InitStats();
     void Init(EntityManager* Entity_Manager, float world_width, float world_height);
     void Init(EntityManager* Entity_Manager, float world_width, float world_height, Vector3 startpos);
     void Update(double dt);
@@ -28,6 +29,9 @@ private:
     float AttackReset_Timer;
     int AttackDamage;
     float MovementSpeed;
+    float DodgeReset_Timer;
+    float DodgeSpeed;
+    float DodgeDuration;
 };
 
 #endif

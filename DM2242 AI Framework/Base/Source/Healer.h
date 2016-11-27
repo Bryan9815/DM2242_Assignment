@@ -34,6 +34,7 @@ private:
     float HealReset_Timer;
     bool InjuredAlly;
     BaseEntity* InjuredAllyEntity;
+    
 };
 
 

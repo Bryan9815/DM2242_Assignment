@@ -4,6 +4,8 @@
 #define STARTPOS Vector3(10,45,0)
 #define TIME_BETWEEN_ATTACKS 1.0f
 #define REVIVE_RANGE 0.7f
+#define TIME_BETWEEN_DODGE 5.f
+#define DODGE_TIME 1.5f
 RangerEntity::RangerEntity()
 {
     Name = "Ranger";
@@ -14,25 +16,33 @@ RangerEntity::~RangerEntity()
 {
     Delete();
 }
+void RangerEntity::InitStats()
+{
+    AttackRange = 5.0f;
+    AttackDamage = 5.0f;
+    MovementSpeed = 3.0f;
+    DeadAlly = false;
+    NearestEnemyDist = 0;
+    NearestDeadAllyDist = 0;
+    NearEnemies = 0;
+    DodgeReset_Timer = 0;
+    DodgeSpeed = 10.f;
+    DodgeDuration = 0.f;
+}
 void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float world_height)
 {
     this->world_height = world_height;
     this->world_width = world_width;
     SetPosition(STARTPOS);
     this->Entity_Manager = Entity_Manager;
-    AttackRange = 5.0f;
-    AttackDamage = 5.0f;
-    MovementSpeed = 5.0f;
-    DeadAlly = false;
-    NearestEnemyDist = 0;
-    NearestDeadAllyDist = 0;
-    NearEnemies = 0;
+    InitStats();
     RangerSM.Init();
     RangerSM.AddState("Move");
     RangerSM.AddState("Shoot");
     RangerSM.AddState("Death"); 
     RangerSM.AddState("Bomb");
     RangerSM.AddState("Revive");
+    RangerSM.AddState("Dodge");
 
     RangerSM.SetState("Move");
 
@@ -44,13 +54,7 @@ void RangerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     Name = "Ranger";
     SetPosition(startpos);
     this->Entity_Manager = Entity_Manager;
-    AttackRange = 5.0f;
-    AttackDamage = 5.0f;
-    MovementSpeed = 5.f;
-    DeadAlly = false;
-    NearestEnemyDist = 0;
-    NearestDeadAllyDist = 0;
-    NearEnemies = 0;
+    InitStats();
     RangerSM.Init();
     RangerSM.AddState("Move");
     RangerSM.AddState("Shoot");
@@ -106,7 +110,11 @@ void RangerEntity::StateCheck()
             RangerSM.SetState("Move");
             return;
         }
-            
+        if (NearestEnemyDist < 5 && (DodgeReset_Timer > TIME_BETWEEN_DODGE))
+        {
+            RangerSM.SetState("Dodge");
+            return;
+        }
         if (DeadAlly)
         {
             RangerSM.SetState("Revive");
@@ -115,11 +123,15 @@ void RangerEntity::StateCheck()
             
 
     }
-    /*else if (RangerSM.GetState() == "Bomb")
+    else if (RangerSM.GetState() == "Dodge")
     {
-        if (NearEnemies < 4)
+        if (NearestEnemyDist > 5 && DodgeReset_Timer < TIME_BETWEEN_DODGE)
+        {
             RangerSM.SetState("Shoot");
-    }*/
+            return;
+        }
+            
+    }
     else if (RangerSM.GetState() == "Death")
     {
         
@@ -167,13 +179,28 @@ void RangerEntity::StateRun(double dt)
         {
             AttackReset_Timer = 0;
             Entity_Manager->DecreaseEntityHP("Mob", AttackDamage);
-            Aggro += AttackDamage;
+            Aggro += AttackDamage * 5;
         }
     }
-    /*else if (RangerSM.GetState() == "Bomb")
+    else if (RangerSM.GetState() == "Dodge")
     {
-        
-    }*/
+        if (DodgeReset_Timer > TIME_BETWEEN_DODGE)// dodge off cooldown
+        {
+            if (DodgeDuration < DODGE_TIME)
+            {
+                DodgeDuration += dt;
+                Position += -(Entity_Manager->FindNearestEntity_Pos(Position, "Mob") - Position).Normalize() * DodgeSpeed * dt;
+                return;
+            }
+            else if (DodgeDuration >= DODGE_TIME)
+            {
+                DodgeDuration = 0;
+                DodgeReset_Timer = 0;
+                return;
+            }
+
+        }
+    }
     else if (RangerSM.GetState() == "Death")
     {
 
@@ -214,7 +241,8 @@ void RangerEntity::UpdateVariables(double dt)
         AttackReset_Timer += dt;
     BaseEntity* temp;
     DeadAlly = Entity_Manager->Hero_getDead(Name);
-    
+    if (RangerSM.GetState() != "Dodge")
+        DodgeReset_Timer += dt;
 }
 
 void RangerEntity::WrapAroundScreen()
