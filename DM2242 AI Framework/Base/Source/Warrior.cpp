@@ -19,7 +19,7 @@ void Warrior::Init(EntityManager* EManager, float world_width, float world_heigh
 
 	SetPosition(Vector3(20, 50, 0));
 	Speed = 6.f;
-	AttackRange = 2.f;
+	AttackRange = 6.f;
 	Cooldown = 2.f;
 	Dead = false;
 	DeadAlly = false;

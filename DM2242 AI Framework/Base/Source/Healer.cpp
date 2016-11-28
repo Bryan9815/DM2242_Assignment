@@ -32,7 +32,7 @@ void HealerEntity::Init(EntityManager* Entity_Manager, float world_width, float 
     NearEnemies = 0;
     AttackReset_Timer = 0;
     InjuredAllyEntity = NULL;
-    HealRange = 7.f;
+    HealRange = 4.f;
     healAmt = 10.f;
     HealReset_Timer = 0;
     //states

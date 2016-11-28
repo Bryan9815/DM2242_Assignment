@@ -179,7 +179,7 @@ void RangerEntity::StateRun(double dt)
         {
             AttackReset_Timer = 0;
             Entity_Manager->DecreaseEntityHP("Mob", AttackDamage);
-            Aggro += AttackDamage * 5;
+            Aggro += AttackDamage;
         }
     }
     else if (RangerSM.GetState() == "Dodge")
